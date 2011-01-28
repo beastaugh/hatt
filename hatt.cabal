@@ -1,0 +1,29 @@
+Name:               hatt
+Version:            0.1
+Synopsis:           
+Description:        
+License:            BSD3
+License-file:       LICENSE
+Author:             Benedict Eastaugh
+Maintainer:         benedict@eastaugh.net
+Copyright:          (c) 2011 Benedict Eastaugh
+Category:           Logic
+Build-type:         Simple
+Extra-source-files: README.md
+Cabal-version:      >=1.2
+                    
+Library             
+  Exposed-modules:  Logic.Propositional,
+                    Logic.Propositional.Core,
+                    Logic.Propositional.Parser
+  Build-depends:    base       >= 4.2 && < 4.3,
+                    containers >= 0.3 && < 0.4,
+                    parsec     >= 2.1 && < 2.2
+  Hs-Source-Dirs:   src
+                    
+Executable hatt
+  Build-depends:    base       >= 4.2 && < 4.3,
+                    containers >= 0.3 && < 0.4,
+                    parsec     >= 2.1 && < 2.2
+  Hs-Source-Dirs:   src
+  Main-Is:          hatt.hs
