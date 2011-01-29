@@ -1,6 +1,6 @@
 module Logic.Propositional
     ( Expr (..)
-    , Mapping (..)
+    , Mapping
     
     , equivalent
     , interpret

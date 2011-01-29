@@ -1,11 +1,12 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 
-module Main (main) where
+module Main
+    ( main
+    ) where
 
 import Logic.Propositional
 
 import System.Console.CmdArgs
-import Data.Either ( Either (..) )
 
 data HattOpts = HattOpts
     { evaluate :: String

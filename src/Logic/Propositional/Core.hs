@@ -3,7 +3,7 @@ module Logic.Propositional.Core where
 import Prelude hiding (lookup)
 
 import Control.Monad (replicateM)
-import Data.Map (Map (..), fromList, lookup)
+import Data.Map (Map, fromList, lookup)
 import Data.Maybe (fromMaybe)
 
 data Expr = Variable      String
@@ -63,12 +63,18 @@ values expr = map (interpret expr) (assignments expr)
 
 showAscii :: Expr -> String
 showAscii (Variable      name)      = name
-showAscii (Negation      expr)      = '~' : show expr
-showAscii (Conjunction   exp1 exp2) = showBC "&"   exp1 exp2
-showAscii (Disjunction   exp1 exp2) = showBC "|"   exp1 exp2
-showAscii (Conditional   exp1 exp2) = showBC "->"  exp1 exp2
-showAscii (Biconditional exp1 exp2) = showBC "<->" exp1 exp2
+showAscii (Negation      expr)      = '~' : showAscii expr
+showAscii (Conjunction   exp1 exp2) = showBCA "&"   exp1 exp2
+showAscii (Disjunction   exp1 exp2) = showBCA "|"   exp1 exp2
+showAscii (Conditional   exp1 exp2) = showBCA "->"  exp1 exp2
+showAscii (Biconditional exp1 exp2) = showBCA "<->" exp1 exp2
+
+showBinaryConnective :: (Expr -> String) -> String -> Expr -> Expr -> String
+showBinaryConnective show_ symbol exp1 exp2 =
+  '(' : show_ exp1 ++ " " ++ symbol ++ " " ++ show_ exp2 ++ ")"
 
 showBC :: String -> Expr -> Expr -> String
-showBC symbol exp1 exp2 =
-  '(' : show exp1 ++ " " ++ symbol ++ " " ++ show exp2 ++ ")"
+showBC = showBinaryConnective show
+
+showBCA :: String -> Expr -> Expr -> String
+showBCA = showBinaryConnective showAscii

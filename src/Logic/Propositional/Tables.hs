@@ -3,9 +3,8 @@ module Logic.Propositional.Tables
     ) where
 
 import Logic.Propositional.Core
-import Logic.Propositional.Parser
 
-import Data.Map (Map(..), fold)
+import Data.Map (fold)
 
 truthTable :: Expr -> String
 truthTable expr = unlines [header, separator, body]
