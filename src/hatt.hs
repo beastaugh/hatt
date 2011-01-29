@@ -26,5 +26,5 @@ main = do opts <- cmdArgs hattOpts
 
 eval :: String -> String
 eval str = case parseExpr "" str of
-                Left  err  -> "parse error at " ++ show err
+                Left  err  -> "parse error at " ++ show err ++ "\n"
                 Right expr -> truthTable expr
