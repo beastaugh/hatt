@@ -8,13 +8,20 @@ import Text.ParserCombinators.Parsec
     ( Parser (..)
     , char
     , choice
+    , eof
     , oneOf
     , parse
     , spaces
     , string
     )
 
-parseExpr = parse expr
+parseExpr = parse statement
+
+statement = do spaces
+               x <- expr
+               spaces
+               eof
+               return x
 
 expr = choice [binaryP, negation, constant]
 
