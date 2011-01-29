@@ -1,5 +1,7 @@
 Name:               hatt
 Version:            0.1
+Stability:          experimental
+
 Synopsis:           A truth-table generator for classical propositional logic.
 Description:        Hatt is a command-line program which prints truth tables
                     for expressions in classical propositional logic, and a
@@ -10,23 +12,30 @@ License-file:       LICENSE
 Author:             Benedict Eastaugh
 Maintainer:         benedict@eastaugh.net
 Copyright:          (c) 2011 Benedict Eastaugh
+Homepage:           https://github.com/beastaugh/hatt
 Category:           Logic
+Cabal-version:      >= 1.6
+
 Build-type:         Simple
 Extra-source-files: README.md
-Cabal-version:      >=1.2
-                    
-Library             
-  Exposed-modules:  Logic.Propositional
-  Build-depends:    base       >= 4.2 && < 4.3,
-                    cmdargs    >= 0.6 && < 0.7,
-                    containers >= 0.3 && < 0.4,
-                    parsec     >= 2.1 && < 2.2
+
+Source-repository head
+  Type:             git
+  Location:         git://github.com/beastaugh/hatt.git
+
+Library
   Hs-Source-Dirs:   src
-                    
-Executable hatt
+  GHC-options:      -Wall
   Build-depends:    base       >= 4.2 && < 4.3,
-                    cmdargs    >= 0.6 && < 0.7,
                     containers >= 0.3 && < 0.4,
                     parsec     >= 2.1 && < 2.2
+  Exposed-modules:  Logic.Propositional
+
+Executable hatt
   Hs-Source-Dirs:   src
   Main-Is:          hatt.hs
+  GHC-options:      -Wall
+  Build-depends:    base       >= 4.2 && < 4.3,
+                    cmdargs    >= 0.6 && < 0.7,
+                    containers >= 0.3 && < 0.4,
+                    parsec     >= 2.1 && < 2.2
