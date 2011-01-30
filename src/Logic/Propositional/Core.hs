@@ -1,3 +1,5 @@
+{-# OPTIONS_HADDOCK hide #-}
+
 module Logic.Propositional.Core where
 
 import Prelude hiding (lookup)
@@ -24,6 +26,15 @@ instance Show Expr where
 
 type Mapping = Map String Bool
 
+-- | In order to interpret an expression, a mapping from variables to truth
+-- values needs to be provided. Truth values are compositional; that's to say,
+-- the value of a composite expression (any expression which is not atomic)
+-- depends on the truth values of its component parts. For example, the Haskell
+-- expression below would evaluate to @False@.
+--
+-- > interpret
+-- >     (Conjunction (Variable "A") (Variable "B"))
+-- >     (fromList [("A", True), ("B", False)])
 interpret :: Expr -> Mapping -> Bool
 interpret (Variable      v)         vs = fromMaybe False (lookup v vs)
 interpret (Negation      expr)      vs = not $ interpret expr vs
@@ -32,11 +43,13 @@ interpret (Disjunction   exp1 exp2) vs = interpret exp1 vs || interpret exp2 vs
 interpret (Conditional   exp1 exp2) vs = not $ interpret exp1 vs || interpret exp2 vs
 interpret (Biconditional exp1 exp2) vs = interpret exp1 vs == interpret exp2 vs
 
+-- | Generates the possible assignments of variables in an expression.
 assignments :: Expr -> [Mapping]
 assignments expr = let vs = variables expr
                        ps = replicateM (length vs) [True, False]
                    in  map (fromList . zip vs) ps
 
+-- | Lists the names of variables present in an expression.
 variables :: Expr -> [String]
 variables expr = let vars_ (Variable      v)     vs = v : vs
                      vars_ (Negation      e)     vs = vars_ e vs
@@ -46,21 +59,32 @@ variables expr = let vars_ (Variable      v)     vs = v : vs
                      vars_ (Biconditional e1 e2) vs = vars_ e1 vs ++ vars_ e2 vs
                  in  vars_ expr []
 
+-- | Determines whether two expressions are extensionally equivalent (that is,
+-- have the same values under all interpretations).
 equivalent :: Expr -> Expr -> Bool
 equivalent exp1 exp2 = values exp1 == values exp2
 
+-- | Determines whether an expression is tautological.
 isTautology :: Expr -> Bool
 isTautology = and . values
 
+-- | Determines whether an expression is contradictory.
 isContradiction :: Expr -> Bool
 isContradiction = not . or . values
 
+-- | Determines whether an expression is contingent (that is, true in at least
+-- one interpretation and false in at least one interpretation).
 isContingent :: Expr -> Bool
 isContingent expr = not (isTautology expr || isContradiction expr)
 
+-- | Lists the values of an expression under all interpretations (that is, all
+-- assignments of values to variables).
 values :: Expr -> [Bool]
 values expr = map (interpret expr) (assignments expr)
 
+-- | Represents expressions using only ASCII characters (the 'show' function
+-- pretty-prints expressions using logical symbols only present in extended
+-- character sets).
 showAscii :: Expr -> String
 showAscii (Variable      name)      = name
 showAscii (Negation      expr)      = '~' : showAscii expr

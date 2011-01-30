@@ -2,10 +2,10 @@ Name:               hatt
 Version:            0.1
 Stability:          experimental
 
-Synopsis:           A truth-table generator for classical propositional logic.
+Synopsis:           A truth table generator for classical propositional logic.
 Description:        Hatt is a command-line program which prints truth tables
                     for expressions in classical propositional logic, and a
-                    library allowing its parser, evaluator and truth-table
+                    library allowing its parser, evaluator and truth table
                     generator to be used in other programs.
 License:            BSD3
 License-file:       LICENSE
@@ -29,7 +29,10 @@ Library
   Build-depends:    base       >= 4.2 && < 4.3,
                     containers >= 0.3 && < 0.4,
                     parsec     >= 2.1 && < 2.2
-  Exposed-modules:  Logic.Propositional
+  Exposed-modules:  Logic.Propositional,
+                    Logic.Propositional.Core,
+                    Logic.Propositional.Parser,
+                    Logic.Propositional.Tables
 
 Executable hatt
   Hs-Source-Dirs:   src

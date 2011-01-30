@@ -1,3 +1,5 @@
+{-# OPTIONS_HADDOCK hide #-}
+
 module Logic.Propositional.Tables
     ( truthTable
     ) where
@@ -6,6 +8,7 @@ import Logic.Propositional.Core
 
 import Data.Map (fold)
 
+-- | The 'truthTable' function produces a truth table for the given expression.
 truthTable :: Expr -> String
 truthTable expr = unlines [header, separator, body]
   where
