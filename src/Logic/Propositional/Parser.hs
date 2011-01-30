@@ -71,4 +71,4 @@ binary = do x1 <- expr
     connective "|"   = Disjunction
     connective "->"  = Conditional
     connective "<->" = Biconditional
-    connective _     = undefined
+    connective _     = error "Impossible case"
