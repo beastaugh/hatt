@@ -64,9 +64,9 @@ format in which they're entered.
 Using Hatt in other programs
 ----------------------------
 
-Hatt exposes the `Logic.Propositional` module, which provides a simple API for
-parsing, evaluating, and printing truth tables.
+Hatt exposes the `Data.Logic.Propositional` module, which provides a simple API
+for parsing, evaluating, and printing truth tables.
 
 
-[Hatt]:          http://extralogical.net/projects/hatt
-[Hackage]:       http://hackage.haskell.org/
+[Hatt]:    http://extralogical.net/projects/hatt
+[Hackage]: http://hackage.haskell.org/

@@ -1,11 +1,11 @@
 {-# OPTIONS_GHC -fno-warn-unused-do-bind #-}
 {-# OPTIONS_HADDOCK hide #-}
 
-module Logic.Propositional.Parser
+module Data.Logic.Propositional.Parser
     ( parseExpr
     ) where
 
-import Logic.Propositional.Core (Expr (..))
+import Data.Logic.Propositional.Core (Expr (..))
 
 import Text.ParserCombinators.Parsec
     (char, choice, eof, oneOf, parse, spaces, string)

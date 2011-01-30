@@ -1,10 +1,10 @@
 {-# OPTIONS_HADDOCK hide #-}
 
-module Logic.Propositional.Tables
+module Data.Logic.Propositional.Tables
     ( truthTable
     ) where
 
-import Logic.Propositional.Core
+import Data.Logic.Propositional.Core
 
 import Data.Map (fold)
 

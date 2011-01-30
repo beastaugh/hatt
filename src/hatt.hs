@@ -4,7 +4,7 @@ module Main
     ( main
     ) where
 
-import Logic.Propositional
+import Data.Logic.Propositional
 
 import System.Console.CmdArgs
 

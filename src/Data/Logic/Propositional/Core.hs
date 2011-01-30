@@ -1,6 +1,6 @@
 {-# OPTIONS_HADDOCK hide #-}
 
-module Logic.Propositional.Core where
+module Data.Logic.Propositional.Core where
 
 import Prelude hiding (lookup)
 

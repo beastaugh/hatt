@@ -29,10 +29,10 @@ Library
   Build-depends:    base       >= 4.2 && < 4.3,
                     containers >= 0.3 && < 0.4,
                     parsec     >= 2.1 && < 2.2
-  Exposed-modules:  Logic.Propositional,
-                    Logic.Propositional.Core,
-                    Logic.Propositional.Parser,
-                    Logic.Propositional.Tables
+  Exposed-modules:  Data.Logic.Propositional,
+                    Data.Logic.Propositional.Core,
+                    Data.Logic.Propositional.Parser,
+                    Data.Logic.Propositional.Tables
 
 Executable hatt
   Hs-Source-Dirs:   src
