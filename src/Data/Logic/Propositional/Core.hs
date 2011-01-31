@@ -5,6 +5,7 @@ module Data.Logic.Propositional.Core where
 import Prelude hiding (lookup)
 
 import Control.Monad (replicateM)
+import Data.List (nub)
 import Data.Map (Map, fromList, lookup)
 import Data.Maybe (fromMaybe)
 
@@ -57,7 +58,7 @@ variables expr = let vars_ (Variable      v)     vs = v : vs
                      vars_ (Disjunction   e1 e2) vs = vars_ e1 vs ++ vars_ e2 vs
                      vars_ (Conditional   e1 e2) vs = vars_ e1 vs ++ vars_ e2 vs
                      vars_ (Biconditional e1 e2) vs = vars_ e1 vs ++ vars_ e2 vs
-                 in  vars_ expr []
+                 in  nub $ vars_ expr []
 
 -- | Determines whether two expressions are extensionally equivalent (that is,
 -- have the same values under all interpretations).
