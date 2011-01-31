@@ -29,8 +29,8 @@ Library
   Build-depends:    base       >= 4.2 && < 4.3,
                     containers >= 0.3 && < 0.4,
                     parsec     >= 2.1 && < 2.2
-  Exposed-modules:  Data.Logic.Propositional,
-                    Data.Logic.Propositional.Core,
+  Exposed-modules:  Data.Logic.Propositional
+  Other-modules:    Data.Logic.Propositional.Core,
                     Data.Logic.Propositional.Parser,
                     Data.Logic.Propositional.Tables
 
