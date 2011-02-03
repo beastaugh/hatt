@@ -1,0 +1,17 @@
+Hatt changelog
+==============
+
+Version 0.2
+-----------
+
+* Added the `--pretty` option to pretty-print expressions.
+* The `--evaluate` option now prints ASCII truth tables by default.
+* Added `truthTableP` function to allow configurable expression printing.
+* The `variables` function now returns a list of unique elements.
+* Dependency `base` loosened to >= 4 && < 5 so it will build with GHC 7.
+* Exposed and other modules now correctly differentiated in cabal file.
+
+Version 0.1
+-----------
+
+* Initial release.
