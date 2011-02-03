@@ -20,6 +20,7 @@ module Data.Logic.Propositional
     , show
     , showAscii
     , truthTable
+    , truthTableP
     , variables
     ) where
 
