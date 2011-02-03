@@ -44,6 +44,22 @@ The `--evaluate` flag lets you pass an expression to be evaluated directly.
 Here's an example session doing just that.
 
     $ hatt --evaluate="(P -> (Q | ~R))"
+    P Q R | (P -> (Q | ~R))
+    -----------------------
+    T T T | F
+    T T F | F
+    T F T | F
+    T F F | F
+    F T T | F
+    F T F | F
+    F F T | T
+    F F F | F
+
+By default, `hatt` will print ASCII representations of expressions. If you have
+a Unicode-capable terminal, try passing the `--pretty` option to pretty-print
+expressions using the the more common logical symbols.
+
+    $ hatt --evaluate="(P -> (Q | ~R))" --pretty
     P Q R | (P → (Q ∨ ¬R))
     ----------------------
     T T T | F
@@ -54,11 +70,6 @@ Here's an example session doing just that.
     F T F | F
     F F T | T
     F F F | F
-
-Note that while you need to use ASCII symbols to interact with `hatt`, it
-pretty-prints expressions using the more common logical symbols. The Hatt
-library exposes the `showAscii` function which will print expressions in the
-format in which they're entered.
 
 
 Using Hatt in other programs
