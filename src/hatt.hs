@@ -48,17 +48,17 @@ main = do opts <- cmdArgs hattOpts
           -- program; otherwise, enter interactive mode.
           if evalMode && not interMode
             then return ()
-            else putStrLn replIntroText >> repl
+            else putStrLn replIntroText >> repl printer
 
-repl :: IO ()
-repl = do putStr "> "
-          hFlush stdout
-          cmd <- getLine
-          case parseCommand cmd of
-            Exit        -> return ()
-            Help        -> putStr   replHelpText       >> repl
-            (Eval expr) -> putStr   (truthTable expr)  >> repl
-            (Error err) -> putStrLn ("Error: " ++ err) >> repl
+repl :: (Expr -> String) -> IO ()
+repl p = do putStr "> "
+            hFlush stdout
+            cmd <- getLine
+            case parseCommand cmd of
+              Exit        -> return ()
+              Help        -> putStr   replHelpText         >> repl p
+              (Eval expr) -> putStr   (truthTableP p expr) >> repl p
+              (Error err) -> putStrLn ("Error: " ++ err)   >> repl p
 
 eval :: (Expr -> String) -> String -> String
 eval p str = case parseExpr "" str of
