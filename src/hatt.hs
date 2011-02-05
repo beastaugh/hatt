@@ -8,6 +8,7 @@ import Data.Logic.Propositional
 
 import Data.Char (isSpace, toLower)
 import System.Console.CmdArgs
+import System.IO
 
 data HattOpts = HattOpts
     { evaluate    :: String
@@ -40,7 +41,9 @@ main = do opts <- cmdArgs hattOpts
             _    -> return ()
 
 repl :: IO ()
-repl = do cmd <- getLine
+repl = do putStr "> "
+          hFlush stdout
+          cmd <- getLine
           case parseCommand cmd of
             Exit        -> return ()
             Help        -> putStr   replHelpText       >> repl
