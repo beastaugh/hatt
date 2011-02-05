@@ -17,8 +17,8 @@ hattOpts :: HattOpts
 hattOpts = HattOpts
   { evaluate = ""    &= typ "EXPRESSION"
                      &= help "Print the truth table for the given expression"
-  , pretty   = False &= help "Use Unicode logic symbols when printing expressions"
-  } &= summary "Hatt 0.1, (c) Benedict Eastaugh 2011"
+  , pretty   = False &= help "Use Unicode logic symbols"
+  } &= summary "Hatt 0.2, (c) Benedict Eastaugh 2011"
     &= program "hatt"
 
 main :: IO ()
