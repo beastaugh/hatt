@@ -48,7 +48,7 @@ main = do opts <- cmdArgs hattOpts
           -- program; otherwise, enter interactive mode.
           if evalMode && not interMode
             then return ()
-            else putStrLn "Entering interactive mode..." >> repl
+            else putStrLn replIntroText >> repl
 
 repl :: IO ()
 repl = do putStr "> "
@@ -66,34 +66,52 @@ eval p str = case parseExpr "" str of
                Right expr -> truthTableP p expr
 
 parseCommand :: String -> Command
-parseCommand s = case map toLower cmd of
-                   "exit" -> Exit
-                   "help" -> Help
-                   "eval" -> eval_ rest
-                   ""     -> Error "no command entered"
-                   other  -> Error $ "unknown command " ++ other
+parseCommand input = case cmd . words . dropWhile isSpace $ input of
+                       ""     -> Error "you must enter an expression or a command."
+                       "exit" -> Exit
+                       "help" -> Help
+                       _      -> eval_ input
   where
-    (cmd, rest) = splitOnFirstSpace . dropWhile isSpace $ s
-    eval_ str   = case parseExpr "" str of
-                    Left  err  -> Error $ "parse error at " ++ show err
-                    Right expr -> Eval expr
+    cmd []    = ""
+    cmd ws    = map toLower . head $ ws
+    eval_ str = case parseExpr "" str of
+                  Left  err  -> Error $ "parse error at " ++ show err
+                  Right expr -> Eval expr
+
+replIntroText :: String
+replIntroText = unwords
+  [ "Entering interactive mode."
+  , "Type `help` if you don't know what to do!"
+  ]
 
 replHelpText :: String
 replHelpText = unlines
-  [ "The following commands are available in Hatt's interactive mode:"
-  , ""
-  , "eval [EXPRESSION]"
-  , "  Evaluate an expression. For example, if you enter \"eval (A -> B)\","
-  , "  Hatt will print the truth table for the expression \"(A -> B)\"."
+  [ "Hatt's interactive mode has a couple of commands."
   , ""
   , "help"
   , "  Print this help text."
   , ""
   , "exit"
   , "  Quit the program."
+  , ""
+  , "If you don't type in a command, the program will assume you're writing a"
+  , "logical expression to be evaluated and attempt to parse it."
+  , ""
+  , "For example, if you enter \"(A -> B)\" at the prompt, Hatt will print the"
+  , "truth table for that expression. Here's an example console session."
+  , ""
+  , "    > (A | B)"
+  , "    A B | (A ∨ B)"
+  , "    -------------"
+  , "    T T | T"
+  , "    T F | T"
+  , "    F T | T"
+  , "    F F | F"
+  , "    > foobar"
+  , "    Error: parse error at (line 1, column 1):"
+  , "    unexpected \"f\""
+  , "    expecting white space, \"(\" or \"~\""
+  , "   > exit"
+  , ""
+  , "If none of this makes any sense, try reading the README file."
   ]
-
-splitOnFirstSpace :: String -> (String, String)
-splitOnFirstSpace str = case words str of
-                          []             -> ("", "")
-                          (first : rest) -> (first, unwords rest)
