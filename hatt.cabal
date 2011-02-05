@@ -1,5 +1,5 @@
 Name:               hatt
-Version:            0.2
+Version:            0.3
 Stability:          experimental
 
 Synopsis:           A truth table generator for classical propositional logic.

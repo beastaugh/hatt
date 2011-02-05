@@ -27,7 +27,7 @@ hattOpts = HattOpts
                      &= help "Print the truth table for the given expression"
   , interactive = False &= help "Enter interactive mode"
   , pretty      = False &= help "Use Unicode logic symbols"
-  } &= summary "Hatt 0.2, (c) Benedict Eastaugh 2011"
+  } &= summary "Hatt 0.3, (c) Benedict Eastaugh 2011"
     &= program "hatt"
 
 main :: IO ()

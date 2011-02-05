@@ -40,8 +40,51 @@ mean that, for example, while `(A -> B)` is a valid expression, `A -> B` isn't.
 Using the `hatt` command-line program
 -------------------------------------
 
-The `--evaluate` flag lets you pass an expression to be evaluated directly.
-Here's an example session doing just that.
+The default mode is interactive: you start the program, enter expressions at
+the prompt, and their truth tables are printed. Here's an example session.
+
+    $ hatt
+    Entering interactive mode. Type `help` if you don't know what to do!
+    > help
+    Hatt's interactive mode has a couple of commands.
+    
+    help
+      Print this help text.
+    
+    exit
+      Quit the program.
+    
+    If you don't type in a command, the program will assume you're writing a
+    logical expression to be evaluated and attempt to parse it.
+    
+    For example, if you enter "(A -> B)" at the prompt, Hatt will print the
+    truth table for that expression. Here's an example console session.
+    
+        > (A | B)
+        A B | (A ∨ B)
+        -------------
+        T T | T
+        T F | T
+        F T | T
+        F F | F
+        > foobar
+        Error: parse error at (line 1, column 1):
+        unexpected "f"
+        expecting white space, "(" or "~"
+       > exit
+    
+    If none of this makes any sense, try reading the README file.
+    > (A -> B)
+    A B | (A -> B)
+    --------------
+    T T | F
+    T F | F
+    F T | F
+    F F | T
+    > exit
+
+The `--evaluate` flag lets you pass a single expression to be evaluated
+directly.
 
     $ hatt --evaluate="(P -> (Q | ~R))"
     P Q R | (P -> (Q | ~R))

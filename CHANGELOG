@@ -1,6 +1,13 @@
 Hatt changelog
 ==============
 
+Version 0.3
+-----------
+
+* Added an interactive mode.
+* Made interactive mode the default: it's only not entered if the `--evaluate`
+  flag is passed and the `--interactive` flag is not.
+
 Version 0.2
 -----------
 
