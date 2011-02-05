@@ -20,7 +20,7 @@ truthTableP :: (Expr -> String) -> Expr -> String
 truthTableP printer expr = unlines [header, separator, body]
   where
     header    = unwords vs ++ " | " ++ printer expr
-    body      = unlines $ map (showAssignment expr) as
+    body      = init . unlines $ map (showAssignment expr) as
     separator = concat $ replicate sepLength "-"
     sepLength = length vs * 2 + length (printer expr) + 2
     as        = assignments expr
