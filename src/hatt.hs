@@ -32,13 +32,23 @@ hattOpts = HattOpts
 
 main :: IO ()
 main = do opts <- cmdArgs hattOpts
-          case evaluate opts of
-            ""   -> putStrLn "Try using the --evaluate[=EXPRESSION] flag"
-            expr -> putStr $
-                    eval (if pretty opts then show else showAscii) expr
-          case interactive opts of
-            True -> putStrLn "Entering interactive mode..." >> repl
-            _    -> return ()
+          let expStr    = evaluate opts
+              interMode = interactive opts
+              evalMode  = (not . null) expStr
+              printer   = if pretty opts then show else showAscii
+          
+          -- If the --evaluate flag is passed with an expression, print the
+          -- truth table for that expression.
+          if evalMode
+            then putStr $ eval printer expStr
+            else return ()
+          
+          -- If the --evaluate flag is passed with an expression and
+          -- interactive mode is NOT explicitly requested, terminate the
+          -- program; otherwise, enter interactive mode.
+          if evalMode && not interMode
+            then return ()
+            else putStrLn "Entering interactive mode..." >> repl
 
 repl :: IO ()
 repl = do putStr "> "
