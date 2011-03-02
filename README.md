@@ -51,6 +51,11 @@ the prompt, and their truth tables are printed. Here's an example session.
     help
       Print this help text.
     
+    pretty
+      Pretty-print expressions using Unicode logic symbols. Only employ this
+      option if your console is Unicode-aware. If pretty-printing is already
+      enabled, using this command will disable it.
+    
     exit
       Quit the program.
     
@@ -113,6 +118,9 @@ expressions using the the more common logical symbols.
     F T F | F
     F F T | T
     F F F | F
+
+You can enable pretty-printing while in interactive mode by using the `pretty`
+command.
 
 
 Using Hatt in other programs

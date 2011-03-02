@@ -1,6 +1,12 @@
 Hatt changelog
 ==============
 
+Version 1.0
+-----------
+
+* Pretty-printing can now be enabled and disabled when in the interactive mode
+  by using the `pretty` command.
+
 Version 0.3
 -----------
 
