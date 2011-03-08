@@ -6,6 +6,7 @@ module Main
 
 import Data.Logic.Propositional
 
+import Control.Monad (when, unless)
 import Data.Char (isSpace, toLower)
 import System.Console.CmdArgs
 import System.IO
@@ -40,16 +41,13 @@ main = do opts <- cmdArgs programMode
           
           -- If the --evaluate flag is passed with an expression, print the
           -- truth table for that expression.
-          if evalMode
-            then putStr $ eval printer expStr
-            else return ()
+          when evalMode $ putStr (eval printer expStr)
           
-          -- If the --evaluate flag is passed with an expression and
+          -- Unless the --evaluate flag is passed with an expression and
           -- interactive mode is NOT explicitly requested, terminate the
           -- program; otherwise, enter interactive mode.
-          if evalMode && not interMode
-            then return ()
-            else putStrLn replIntroText >> repl opts
+          unless (evalMode && not interMode) $
+              putStrLn replIntroText >> repl opts
 
 repl :: ProgramMode -> IO ()
 repl mode = do putStr "> "
@@ -132,5 +130,5 @@ replHelpText = unlines
   , "If none of this makes any sense, try reading the README file."
   ]
 
-selectPrinter :: ProgramMode -> (Expr -> String)
+selectPrinter :: ProgramMode -> Expr -> String
 selectPrinter m = if pretty m then show else showAscii
