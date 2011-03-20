@@ -1,6 +1,11 @@
 Hatt changelog
 ==============
 
+Version 1.1
+-----------
+
+* Allow variables to be lower case ASCII letters as well as upper case.
+
 Version 1.0
 -----------
 
