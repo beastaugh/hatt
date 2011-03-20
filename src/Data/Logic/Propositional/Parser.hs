@@ -73,5 +73,5 @@ binary = do x1 <- expr
     connective "<->" = Biconditional
     connective _     = error "Impossible case"
 
-variableChars :: [Char]
+variableChars :: String
 variableChars = ['a'..'z'] ++ ['A'..'Z']
