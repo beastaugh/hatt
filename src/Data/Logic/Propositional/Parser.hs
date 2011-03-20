@@ -19,8 +19,8 @@ import Text.ParserCombinators.Parsec.Prim (GenParser)
 -- following forms, where @&#966;@ and @&#968;@ are metalinguistic variables
 -- standing for any valid expression.
 --
--- * Variables: @\"P\"@, @\"Q\"@, @\"R\"@ etc.; basically anything in the
---   character class @[A-Z]@
+-- * Variables: @\"P\"@, @\"Q\"@, @\"a\"@, @\"b\"@ etc.; basically anything in
+--   the character class @[a-zA-Z]@
 --
 -- * Negation: @\"~&#966;\"@
 --
@@ -45,7 +45,7 @@ expr :: GenParser Char st Expr
 expr = choice [binaryP, negation, variable]
 
 variable :: GenParser Char st Expr
-variable = do c <- oneOf ['A'..'Z']
+variable = do c <- oneOf variableChars
               return $ Variable [c]
 
 negation :: GenParser Char st Expr
@@ -72,3 +72,6 @@ binary = do x1 <- expr
     connective "->"  = Conditional
     connective "<->" = Biconditional
     connective _     = error "Impossible case"
+
+variableChars :: [Char]
+variableChars = ['a'..'z'] ++ ['A'..'Z']

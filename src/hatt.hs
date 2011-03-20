@@ -1,8 +1,6 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 
-module Main
-    ( main
-    ) where
+module Main (main) where
 
 import Data.Logic.Propositional
 

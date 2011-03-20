@@ -28,8 +28,8 @@ parser isn't as smart about parentheses as it could be, so you have to follow
 these rules quite literally. This shouldn't be a great hardship, but it does
 mean that, for example, while `(A -> B)` is a valid expression, `A -> B` isn't.
 
-* Variables: `P`, `Q`, `R` etc.---basically anything in the character class
-  `[A-Z]`
+* Variables: `P`, `Q`, `a`, `b` etc.---basically anything in the character
+  class `[a-zA-Z]`
 * Negation: `~ϕ`
 * Conjunction: `(ϕ & ψ)`
 * Disjunction: `(ϕ | ψ)`
