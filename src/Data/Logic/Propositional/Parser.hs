@@ -8,7 +8,7 @@ module Data.Logic.Propositional.Parser
 import Data.Logic.Propositional.Core (Expr (..))
 
 import Text.ParserCombinators.Parsec
-    (char, choice, eof, oneOf, parse, spaces, string)
+    (char, choice, eof, many, many1, oneOf, parse, spaces, string)
 
 import Text.ParserCombinators.Parsec.Error (ParseError)
 import Text.ParserCombinators.Parsec.Pos (SourceName)
@@ -54,10 +54,12 @@ negation = do char '~'
               return $ Negation x
 
 binaryP :: GenParser Char st Expr
-binaryP = do char '('
+binaryP = do n <- many1 leftP
              x <- binary
-             char ')'
-             return x
+             m <- many1 rightP
+             if sameLength n m
+                then return x
+                else fail "Parentheses must be balanced"
 
 binary :: GenParser Char st Expr
 binary = do x1 <- expr
@@ -73,5 +75,14 @@ binary = do x1 <- expr
     connective "<->" = Biconditional
     connective _     = error "Impossible case"
 
+leftP :: GenParser Char st Char
+leftP = char '('
+
+rightP :: GenParser Char st Char
+rightP = char ')'
+
 variableChars :: String
 variableChars = ['a'..'z'] ++ ['A'..'Z']
+
+sameLength :: [a] -> [b] -> Bool
+sameLength xs ys = length xs == length ys
