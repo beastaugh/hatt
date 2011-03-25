@@ -8,7 +8,7 @@ module Data.Logic.Propositional.Parser
 import Data.Logic.Propositional.Core (Expr (..))
 
 import Text.ParserCombinators.Parsec
-    (char, choice, eof, many, many1, oneOf, parse, spaces, string)
+    (char, choice, eof, many1, oneOf, parse, spaces, string)
 
 import Text.ParserCombinators.Parsec.Error (ParseError)
 import Text.ParserCombinators.Parsec.Pos (SourceName)
