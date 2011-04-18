@@ -41,7 +41,7 @@ interpret (Variable      v)         vs = fromMaybe False (lookup v vs)
 interpret (Negation      expr)      vs = not $ interpret expr vs
 interpret (Conjunction   exp1 exp2) vs = interpret exp1 vs && interpret exp2 vs
 interpret (Disjunction   exp1 exp2) vs = interpret exp1 vs || interpret exp2 vs
-interpret (Conditional   exp1 exp2) vs = not $ interpret exp1 vs || interpret exp2 vs
+interpret (Conditional   exp1 exp2) vs = not (interpret exp1 vs) || interpret exp2 vs
 interpret (Biconditional exp1 exp2) vs = interpret exp1 vs == interpret exp2 vs
 
 -- | Generates the possible assignments of variables in an expression.
