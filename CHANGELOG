@@ -1,6 +1,12 @@
 Hatt changelog
 ==============
 
+Version 1.1.1
+-------------
+
+* Correct semantics for interpreting conditionals. Fixes an operator precedence
+  bug in the previous implementation.
+
 Version 1.1
 -----------
 
