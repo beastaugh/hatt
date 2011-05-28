@@ -27,7 +27,6 @@ The following are all valid expression forms which can be parsed by Hatt, where
 parser isn't as smart about parentheses as it could be, so you have to follow
 these rules quite literally. This shouldn't be a great hardship, but it does
 mean that, for example, while `(A -> B)` is a valid expression, `A -> B` isn't.
-Parentheses may be nested indefinitely, as long as they are balanced.
 
 * Variables: `P`, `Q`, `a`, `b` etc.---basically anything in the character
   class `[a-zA-Z]`
