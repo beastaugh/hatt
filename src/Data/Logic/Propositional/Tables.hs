@@ -8,6 +8,7 @@ module Data.Logic.Propositional.Tables
 import Data.Logic.Propositional.Core
 
 import Data.Map (fold)
+import Text.PrettyPrint.ANSI.Leijen (green, text, red)
 
 -- | The 'truthTable' function produces a truth table for the given expression.
 truthTable :: Expr -> String
@@ -33,5 +34,5 @@ showAssignment expr a = showVarValues ++ " | " ++ showExprValue
     showExprValue = showBool $ interpret expr a
 
 showBool :: Bool -> String
-showBool True  = "T"
-showBool False = "F"
+showBool True  = show . green . text $ "T"
+showBool False = show . red . text $ "F"
