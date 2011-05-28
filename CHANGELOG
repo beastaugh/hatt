@@ -1,6 +1,11 @@
 Hatt changelog
 ==============
 
+Version 1.2.0
+-------------
+
+* Truth values are coloured green (T) and red (F) when printed.
+
 Version 1.1.1
 -------------
 
