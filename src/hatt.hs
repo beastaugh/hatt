@@ -27,7 +27,7 @@ programMode = ProgramMode
                      &= help "Print the truth table for the given expression"
   , interactive = False &= help "Enter interactive mode"
   , pretty      = False &= help "Use Unicode logic symbols"
-  } &= summary "Hatt 1.1.1, (c) Benedict Eastaugh 2011"
+  } &= summary "Hatt 1.2.0, (c) Benedict Eastaugh 2011"
     &= program "hatt"
 
 main :: IO ()

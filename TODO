@@ -1,0 +1,6 @@
+To do
+=====
+
+* [Parser] Be more forgiving of a variety of expression styles
+* [Testing] Add a QuickCheck-based test suite
+* [Testing] Consider HUnit for testing the REPL
