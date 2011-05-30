@@ -11,7 +11,7 @@ License-file:       LICENSE
 Author:             Benedict Eastaugh
 Maintainer:         benedict@eastaugh.net
 Copyright:          (c) 2011 Benedict Eastaugh
-Homepage:           https://github.com/beastaugh/hatt
+Homepage:           http://extralogical.net/projects/hatt
 Category:           Logic
 Cabal-version:      >= 1.6
 
