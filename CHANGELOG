@@ -1,6 +1,13 @@
 Hatt changelog
 ==============
 
+Version 1.3.0
+-------------
+
+* Add the `--coloured` command-line flag and `colour` command in interactive
+  mode to make truth value colouring optional.
+* Relax containers dependency to >= 0.3 && < 0.5.
+
 Version 1.2.1
 -------------
 

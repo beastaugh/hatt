@@ -46,7 +46,7 @@ the prompt, and their truth tables are printed. Here's an example session.
     $ hatt
     Entering interactive mode. Type `help` if you don't know what to do!
     > help
-    Hatt's interactive mode has a couple of commands.
+    Hatt's interactive mode has several commands.
     
     help
       Print this help text.
@@ -55,6 +55,11 @@ the prompt, and their truth tables are printed. Here's an example session.
       Pretty-print expressions using Unicode logic symbols. Only employ this
       option if your console is Unicode-aware. If pretty-printing is already
       enabled, using this command will disable it.
+    
+    colour
+      Colour truth values: green for true, red for false. This feature needs
+      your console to support ANSI colour codes. If coloured mode is already
+      enabled, this command will disable it.
     
     exit
       Quit the program.
@@ -66,25 +71,25 @@ the prompt, and their truth tables are printed. Here's an example session.
     truth table for that expression. Here's an example console session.
     
         > (A | B)
-        A B | (A ∨ B)
+        A B | (A | B)
         -------------
-        T T | T
+        T T | F
         T F | T
         F T | T
         F F | F
         > foobar
-        Error: parse error at (line 1, column 1):
-        unexpected "f"
-        expecting white space, "(" or "~"
-       > exit
+        Parse error at (line 1, column 2):
+        unexpected "o"
+        expecting white space or end of input
+        > exit
     
     If none of this makes any sense, try reading the README file.
     > (A -> B)
     A B | (A -> B)
     --------------
-    T T | F
+    T T | T
     T F | F
-    F T | F
+    F T | T
     F F | T
     > exit
 
@@ -121,6 +126,10 @@ expressions using the the more common logical symbols.
 
 You can enable pretty-printing while in interactive mode by using the `pretty`
 command.
+
+If you pass the `--coloured` flag, `hatt` will colour the truth values in the
+tables which it prints: green for true, red for false. You can enable colouring
+during interactive mode by using the `colour` command.
 
 
 Using Hatt in other programs

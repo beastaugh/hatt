@@ -3,6 +3,7 @@
 module Main (main) where
 
 import Data.Logic.Propositional
+import Data.Logic.Propositional.Tables
 
 import Control.Monad (when, unless)
 import Data.Char (isSpace, toLower)
@@ -12,6 +13,7 @@ import System.IO
 data Command = Exit
              | Help
              | Pretty
+             | Coloured
              | Eval Expr
              | Error String
 
@@ -19,6 +21,7 @@ data ProgramMode = ProgramMode
   { evaluate    :: String
   , interactive :: Bool
   , pretty      :: Bool
+  , coloured    :: Bool
   } deriving (Show, Data, Typeable)
 
 programMode :: ProgramMode
@@ -27,7 +30,8 @@ programMode = ProgramMode
                      &= help "Print the truth table for the given expression"
   , interactive = False &= help "Enter interactive mode"
   , pretty      = False &= help "Use Unicode logic symbols"
-  } &= summary "Hatt 1.2.1, (c) Benedict Eastaugh 2011"
+  , coloured    = False &= help "Use colour-coded symbols"
+  } &= summary "Hatt 1.3.0, (c) Benedict Eastaugh 2011"
     &= program "hatt"
 
 main :: IO ()
@@ -57,16 +61,20 @@ repl mode = do putStr "> "
                                 >> repl mode
                  Pretty      -> putStrLn ppMessage
                                 >> repl (mode {pretty = not isPretty})
+                 Coloured    -> putStrLn cpMessage
+                                >> repl (mode {coloured = not isColoured})
                  (Eval expr) -> putStr (truthTableP printer expr)
                                 >> repl mode
                  (Error err) -> putStrLn ("Error: " ++ err)
                                 >> repl mode
   where
-    printer   = selectPrinter mode
-    isPretty  = pretty mode
-    ppMessage = (if isPretty then "Dis" else "En") ++ "abling pretty-printing."
+    printer    = selectPrinter mode
+    isPretty   = pretty mode
+    isColoured = coloured mode
+    ppMessage  = (if isPretty then "Dis" else "En") ++ "abling pretty-printing."
+    cpMessage  = (if isColoured then "Dis" else "En") ++ "abling colour-coding."
 
-eval :: (Expr -> String) -> String -> String
+eval :: Printer -> String -> String
 eval p str = case parseExpr "" str of
                Left  err  -> "Parse error at " ++ show err ++ "\n"
                Right expr -> truthTableP p expr
@@ -77,6 +85,7 @@ parseCommand input = case cmd . words . dropWhile isSpace $ input of
                        "exit"   -> Exit
                        "help"   -> Help
                        "pretty" -> Pretty
+                       "colour" -> Coloured
                        _        -> eval_ input
   where
     cmd []    = ""
@@ -91,7 +100,7 @@ replIntroText = unwords
   , "Type `help` if you don't know what to do!"
   ]
 
-replHelpText :: (Expr -> String) -> String
+replHelpText :: Printer -> String
 replHelpText printer = unlines
   [ "Hatt's interactive mode has several commands."
   , ""
@@ -102,6 +111,11 @@ replHelpText printer = unlines
   , "  Pretty-print expressions using Unicode logic symbols. Only employ this"
   , "  option if your console is Unicode-aware. If pretty-printing is already"
   , "  enabled, using this command will disable it."
+  , ""
+  , "colour"
+  , "  Colour truth values: green for true, red for false. This feature needs"
+  , "  your console to support ANSI colour codes. If coloured mode is already"
+  , "  enabled, this command will disable it."
   , ""
   , "exit"
   , "  Quit the program."
@@ -120,8 +134,10 @@ replHelpText printer = unlines
   , "If none of this makes any sense, try reading the README file."
   ]
 
-selectPrinter :: ProgramMode -> Expr -> String
-selectPrinter m = if pretty m then show else showAscii
+selectPrinter :: ProgramMode -> Printer
+selectPrinter m = let expPrinter   = if pretty m then show else showAscii
+                      tablePrinter = if coloured m then colourBool else showBool
+                  in (expPrinter, tablePrinter)
 
 indentBy :: Int -> String -> String
 indentBy n = unlines . map (replicate n ' ' ++) . lines
