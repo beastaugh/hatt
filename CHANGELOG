@@ -1,6 +1,12 @@
 Hatt changelog
 ==============
 
+Version 1.2.1
+-------------
+
+* Use truth table and parsing code to produce the example console session in
+  the interactive mode help text.
+
 Version 1.2.0
 -------------
 

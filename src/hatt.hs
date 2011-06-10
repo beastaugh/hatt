@@ -27,7 +27,7 @@ programMode = ProgramMode
                      &= help "Print the truth table for the given expression"
   , interactive = False &= help "Enter interactive mode"
   , pretty      = False &= help "Use Unicode logic symbols"
-  } &= summary "Hatt 1.2.0, (c) Benedict Eastaugh 2011"
+  } &= summary "Hatt 1.2.1, (c) Benedict Eastaugh 2011"
     &= program "hatt"
 
 main :: IO ()
@@ -53,7 +53,7 @@ repl mode = do putStr "> "
                cmd <- getLine
                case parseCommand cmd of
                  Exit        -> return ()
-                 Help        -> putStr replHelpText
+                 Help        -> putStr (replHelpText printer)
                                 >> repl mode
                  Pretty      -> putStrLn ppMessage
                                 >> repl (mode {pretty = not isPretty})
@@ -91,8 +91,8 @@ replIntroText = unwords
   , "Type `help` if you don't know what to do!"
   ]
 
-replHelpText :: String
-replHelpText = unlines
+replHelpText :: (Expr -> String) -> String
+replHelpText printer = unlines
   [ "Hatt's interactive mode has several commands."
   , ""
   , "help"
@@ -113,20 +113,15 @@ replHelpText = unlines
   , "truth table for that expression. Here's an example console session."
   , ""
   , "    > (A | B)"
-  , "    A B | (A ∨ B)"
-  , "    -------------"
-  , "    T T | T"
-  , "    T F | T"
-  , "    F T | T"
-  , "    F F | F"
-  , "    > foobar"
-  , "    Error: parse error at (line 1, column 1):"
-  , "    unexpected \"f\""
-  , "    expecting white space, \"(\" or \"~\""
-  , "   > exit"
-  , ""
+  , indentBy 4 $ truthTableP printer (Disjunction (Variable "A") (Variable "B"))
+ ++ "> foobar\n"
+ ++ eval printer "foobar"
+ ++ "> exit"
   , "If none of this makes any sense, try reading the README file."
   ]
 
 selectPrinter :: ProgramMode -> Expr -> String
 selectPrinter m = if pretty m then show else showAscii
+
+indentBy :: Int -> String -> String
+indentBy n = unlines . map (replicate n ' ' ++) . lines
