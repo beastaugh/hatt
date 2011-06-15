@@ -45,51 +45,30 @@ the prompt, and their truth tables are printed. Here's an example session.
 
     $ hatt
     Entering interactive mode. Type `help` if you don't know what to do!
-    > help
-    Hatt's interactive mode has several commands.
-    
-    help
-      Print this help text.
-    
-    pretty
-      Pretty-print expressions using Unicode logic symbols. Only employ this
-      option if your console is Unicode-aware. If pretty-printing is already
-      enabled, using this command will disable it.
-    
-    colour
-      Colour truth values: green for true, red for false. This feature needs
-      your console to support ANSI colour codes. If coloured mode is already
-      enabled, this command will disable it.
-    
-    exit
-      Quit the program.
-    
-    If you don't type in a command, the program will assume you're writing a
-    logical expression to be evaluated and attempt to parse it.
-    
-    For example, if you enter "(A -> B)" at the prompt, Hatt will print the
-    truth table for that expression. Here's an example console session.
-    
-        > (A | B)
-        A B | (A | B)
-        -------------
-        T T | T
-        T F | T
-        F T | T
-        F F | F
-        > foobar
-        Parse error at (line 1, column 2):
-        unexpected "o"
-        expecting white space or end of input
-        > exit
-    
-    If none of this makes any sense, try reading the README file.
-    > (A -> B)
-    A B | (A -> B)
-    --------------
+    > (A | B)
+    A B | (A | B)
+    -------------
+    T T | T
+    T F | T
+    F T | T
+    F F | F
+    > (p -> (q & ~r))
+    p q r | (p -> (q & ~r))
+    -----------------------
+    T T T | F
+    T T F | T
+    T F T | F
+    T F F | F
+    F T T | T
+    F T F | T
+    F F T | T
+    F F F | T
+    > (e <-> f)
+    e f | (e <-> f)
+    ---------------
     T T | T
     T F | F
-    F T | T
+    F T | F
     F F | T
     > exit
 
