@@ -73,7 +73,7 @@ the prompt, and their truth tables are printed. Here's an example session.
         > (A | B)
         A B | (A | B)
         -------------
-        T T | F
+        T T | T
         T F | T
         F T | T
         F F | F
