@@ -128,8 +128,8 @@ replHelpText printer = unlines
   , ""
   , "    > (A | B)"
   , indentBy 4 $ truthTableP printer (Disjunction (Variable "A") (Variable "B"))
- ++ "> foobar\n"
- ++ eval printer "foobar"
+ ++ "> (A -> B)\n"
+ ++ truthTableP printer (Conditional (Variable "A") (Variable "B"))
  ++ "> exit"
   , "If none of this makes any sense, try reading the README file."
   ]
