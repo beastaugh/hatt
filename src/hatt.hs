@@ -8,7 +8,7 @@ import Data.Logic.Propositional.Tables
 import Control.Monad (when, unless)
 import Data.Char (isSpace, toLower)
 import System.Console.CmdArgs
-import System.IO
+import System.Console.Readline(addHistory, readline)
 
 data Command = Exit
              | Help
@@ -40,11 +40,11 @@ main = do opts <- cmdArgs programMode
               interMode = interactive opts
               evalMode  = (not . null) expStr
               printer   = selectPrinter opts
-          
+
           -- If the --evaluate flag is passed with an expression, print the
           -- truth table for that expression.
           when evalMode $ putStr (eval printer expStr)
-          
+
           -- Unless the --evaluate flag is passed with an expression and
           -- interactive mode is NOT explicitly requested, terminate the
           -- program; otherwise, enter interactive mode.
@@ -52,21 +52,24 @@ main = do opts <- cmdArgs programMode
               putStrLn replIntroText >> repl opts
 
 repl :: ProgramMode -> IO ()
-repl mode = do putStr "> "
-               hFlush stdout
-               cmd <- getLine
-               case parseCommand cmd of
-                 Exit        -> return ()
-                 Help        -> putStr (replHelpText printer)
-                                >> repl mode
-                 Pretty      -> putStrLn ppMessage
-                                >> repl (mode {pretty = not isPretty})
-                 Coloured    -> putStrLn cpMessage
-                                >> repl (mode {coloured = not isColoured})
-                 (Eval expr) -> putStr (truthTableP printer expr)
-                                >> repl mode
-                 (Error err) -> putStrLn ("Error: " ++ err)
-                                >> repl mode
+repl mode = do
+  maybeLine <- readline "> "
+  case maybeLine of
+    Nothing  -> return () -- EOF / control-d
+    Just cmd -> do
+      addHistory cmd
+      case parseCommand cmd of
+        Exit        -> return ()
+        Help        -> putStr (replHelpText printer)
+                        >> repl mode
+        Pretty      -> putStrLn ppMessage
+                        >> repl (mode {pretty = not isPretty})
+        Coloured    -> putStrLn cpMessage
+                        >> repl (mode {coloured = not isColoured})
+        (Eval expr) -> putStr (truthTableP printer expr)
+                        >> repl mode
+        (Error err) -> putStrLn ("Error: " ++ err)
+                       >> repl mode
   where
     printer    = selectPrinter mode
     isPretty   = pretty mode
