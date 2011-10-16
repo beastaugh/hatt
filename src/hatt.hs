@@ -8,7 +8,7 @@ import Data.Logic.Propositional.Tables
 import Control.Monad (when, unless)
 import Data.Char (isSpace, toLower)
 import System.Console.CmdArgs
-import System.IO
+import System.Console.Haskeline (InputT, runInputT, defaultSettings, getInputLine, outputStr, outputStrLn)
 
 data Command = Exit
              | Help
@@ -31,7 +31,7 @@ programMode = ProgramMode
   , interactive = False &= help "Enter interactive mode"
   , pretty      = False &= help "Use Unicode logic symbols"
   , coloured    = False &= help "Use colour-coded symbols"
-  } &= summary "Hatt 1.3.0, (c) Benedict Eastaugh 2011"
+  } &= summary "Hatt 1.3.1, (c) Benedict Eastaugh 2011"
     &= program "hatt"
 
 main :: IO ()
@@ -49,24 +49,26 @@ main = do opts <- cmdArgs programMode
           -- interactive mode is NOT explicitly requested, terminate the
           -- program; otherwise, enter interactive mode.
           unless (evalMode && not interMode) $
-              putStrLn replIntroText >> repl opts
+              putStrLn replIntroText
+              >> runInputT defaultSettings (repl opts)
 
-repl :: ProgramMode -> IO ()
-repl mode = do putStr "> "
-               hFlush stdout
-               cmd <- getLine
-               case parseCommand cmd of
-                 Exit        -> return ()
-                 Help        -> putStr (replHelpText printer)
-                                >> repl mode
-                 Pretty      -> putStrLn ppMessage
-                                >> repl (mode {pretty = not isPretty})
-                 Coloured    -> putStrLn cpMessage
-                                >> repl (mode {coloured = not isColoured})
-                 (Eval expr) -> putStr (truthTableP printer expr)
-                                >> repl mode
-                 (Error err) -> putStrLn ("Error: " ++ err)
-                                >> repl mode
+repl :: ProgramMode -> InputT IO ()
+repl mode = do
+    minput <- getInputLine "> "
+    case minput of
+      Nothing  -> return ()
+      Just cmd -> case parseCommand cmd of
+        Exit        -> return ()
+        Help        -> outputStr (replHelpText printer)
+                       >> repl mode
+        Pretty      -> outputStrLn ppMessage
+                       >> repl (mode {pretty = not isPretty})
+        Coloured    -> outputStrLn cpMessage
+                       >> repl (mode {coloured = not isColoured})
+        (Eval expr) -> outputStr (truthTableP printer expr)
+                       >> repl mode
+        (Error err) -> outputStrLn ("Error: " ++ err)
+                       >> repl mode
   where
     printer    = selectPrinter mode
     isPretty   = pretty mode

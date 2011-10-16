@@ -1,6 +1,11 @@
 Hatt changelog
 ==============
 
+Version 1.3.1
+-------------
+
+* Added command history and better text input handling with Haskeline.
+
 Version 1.3.0
 -------------
 
