@@ -62,7 +62,7 @@ binaryP = do char '('
 binary :: GenParser Char st Expr
 binary = do x1 <- expr
             spaces
-            s  <- choice [string "&", string "|", string "->", string "<->"]
+            s  <- choice $ map string ["&", "|", "->", "<->"]
             spaces
             x2 <- expr
             return $ connective s x1 x2
