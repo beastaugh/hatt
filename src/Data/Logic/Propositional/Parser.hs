@@ -67,8 +67,9 @@ binary = do x1 <- expr
             x2 <- expr
             return $ connective s x1 x2
   where
-    connective "&"   = Conjunction
-    connective "|"   = Disjunction
-    connective "->"  = Conditional
-    connective "<->" = Biconditional
-    connective _     = error "Impossible case"
+    connective c = case c of
+      "&"   -> Conjunction
+      "|"   -> Disjunction
+      "->"  -> Conditional
+      "<->" -> Biconditional
+      _     -> error "Impossible case"
