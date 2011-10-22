@@ -8,7 +8,7 @@ module Data.Logic.Propositional.Parser
 import Data.Logic.Propositional.Core (Expr (..))
 
 import Text.ParserCombinators.Parsec
-    (char, choice, eof, oneOf, parse, spaces, string)
+    (char, choice, eof, letter, parse, spaces, string)
 
 import Text.ParserCombinators.Parsec.Error (ParseError)
 import Text.ParserCombinators.Parsec.Pos (SourceName)
@@ -45,7 +45,7 @@ expr :: GenParser Char st Expr
 expr = choice [binaryP, negation, variable]
 
 variable :: GenParser Char st Expr
-variable = do c <- oneOf variableChars
+variable = do c <- letter
               return $ Variable [c]
 
 negation :: GenParser Char st Expr
@@ -72,6 +72,3 @@ binary = do x1 <- expr
     connective "->"  = Conditional
     connective "<->" = Biconditional
     connective _     = error "Impossible case"
-
-variableChars :: String
-variableChars = ['a'..'z'] ++ ['A'..'Z']
