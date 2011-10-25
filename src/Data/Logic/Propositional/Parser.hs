@@ -50,12 +50,15 @@ variable = do c <- letter
 
 negation :: GenParser Char st Expr
 negation = do char '~'
+              spaces
               x <- expr
               return $ Negation x
 
 binaryP :: GenParser Char st Expr
 binaryP = do char '('
+             spaces
              x <- binary
+             spaces
              char ')'
              return x
 
