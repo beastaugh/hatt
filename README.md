@@ -23,10 +23,7 @@ Valid Hatt expressions
 ----------------------
 
 The following are all valid expression forms which can be parsed by Hatt, where
-ϕ and ψ are metalinguistic variables standing in for any valid expression. The
-parser isn't as smart about parentheses as it could be, so you have to follow
-these rules quite literally. This shouldn't be a great hardship, but it does
-mean that, for example, while `(A -> B)` is a valid expression, `A -> B` isn't.
+ϕ and ψ are metalinguistic variables standing in for any valid expression.
 
 * Variables: `P`, `Q`, `a`, `b` etc.---basically anything in the character
   class `[a-zA-Z]`
@@ -35,6 +32,13 @@ mean that, for example, while `(A -> B)` is a valid expression, `A -> B` isn't.
 * Disjunction: `(ϕ | ψ)`
 * Conditional: `(ϕ -> ψ)`
 * Biconditional: `(ϕ <-> ψ)`
+
+For top-level formulae where the primary connective is a binary one, parentheses
+are not required. For example, the expression `a | b` is valid and will be
+parsed correctly.
+
+There is currently no support for operator precedence, so nested expressions
+must be parenthesised correctly for the parser to make sense of them.
 
 
 Using the `hatt` command-line program

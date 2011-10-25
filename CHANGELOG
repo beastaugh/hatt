@@ -1,6 +1,13 @@
 Hatt changelog
 ==============
 
+Version 1.4.0
+-------------
+
+* Make the parser slightly more liberal: unparenthesised expressions with a
+  binary connective as their primary connective such as "a | b" are now parsed
+  correctly, as are expressions with superfluous spaces such as " ( c -> ~ d )".
+
 Version 1.3.1
 -------------
 
