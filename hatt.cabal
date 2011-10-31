@@ -1,5 +1,5 @@
 Name:               hatt
-Version:            1.4.0
+Version:            1.4.0.1
 
 Synopsis:           A truth table generator for classical propositional logic.
 Description:        Hatt is a command-line program which prints truth tables
