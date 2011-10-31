@@ -128,11 +128,12 @@ replHelpText printer = unlines
   , "For example, if you enter \"(A -> B)\" at the prompt, Hatt will print the"
   , "truth table for that expression. Here's an example console session."
   , ""
-  , "    > (A | B)"
+  , "    > A | B"
   , indentBy 4 $ truthTableP printer (Disjunction (Variable "A") (Variable "B"))
- ++ "> (A -> B)\n"
- ++ truthTableP printer (Conditional (Variable "A") (Variable "B"))
- ++ "> exit"
+ ++ "> P -> (Q & R)\n"
+ ++ truthTableP printer (Conditional
+                          (Variable "P")
+                          (Conjunction (Variable "Q") (Variable "R")))
   , "If none of this makes any sense, try reading the README file."
   ]
 
