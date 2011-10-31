@@ -31,6 +31,10 @@ import Text.ParserCombinators.Parsec.Prim (GenParser)
 -- * Conditional: @\"(&#966; -> &#968;)\"@
 --
 -- * Biconditional: @\"(&#966; \<-> &#968;)\"@
+--
+-- Top-level expressions where the primary connective is a binary one do not
+-- need to be parenthesised. For example, @\"p -> (q & r)\"@ is a valid
+-- expression, although @\"(p -> (q & r))\"@ is also fine.
 parseExpr :: SourceName -> String -> Either ParseError Expr
 parseExpr = parse statement
 

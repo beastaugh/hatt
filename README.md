@@ -33,9 +33,11 @@ The following are all valid expression forms which can be parsed by Hatt, where
 * Conditional: `(ϕ -> ψ)`
 * Biconditional: `(ϕ <-> ψ)`
 
-For top-level formulae where the primary connective is a binary one, parentheses
-are not required. For example, the expression `a | b` is valid and will be
-parsed correctly.
+Parentheses are not required around top-level formulae, regardless of whether
+the primary connective is binary. For example, the expression `a | b` is valid
+and will be parsed correctly, as would `p <-> (q & ~r)`, although the
+parenthesised versions of both these expressions (`(a | b)` and
+`(p <-> (q & ~r))`) are also fine.
 
 There is currently no support for operator precedence, so nested expressions
 must be parenthesised correctly for the parser to make sense of them.
@@ -49,14 +51,14 @@ the prompt, and their truth tables are printed. Here's an example session.
 
     $ hatt
     Entering interactive mode. Type `help` if you don't know what to do!
-    > (A | B)
+    > A | B
     A B | (A | B)
     -------------
     T T | T
     T F | T
     F T | T
     F F | F
-    > (p -> (q & ~r))
+    > p -> (q & ~r)
     p q r | (p -> (q & ~r))
     -----------------------
     T T T | F
@@ -67,7 +69,7 @@ the prompt, and their truth tables are printed. Here's an example session.
     F T F | T
     F F T | T
     F F F | T
-    > (e <-> f)
+    > e <-> f
     e f | (e <-> f)
     ---------------
     T T | T
@@ -79,7 +81,7 @@ the prompt, and their truth tables are printed. Here's an example session.
 The `--evaluate` flag lets you pass a single expression to be evaluated
 directly.
 
-    $ hatt --evaluate="(P -> (Q | ~R))"
+    $ hatt --evaluate="P -> (Q | ~R)"
     P Q R | (P -> (Q | ~R))
     -----------------------
     T T T | F
@@ -95,7 +97,7 @@ By default, `hatt` will print ASCII representations of expressions. If you have
 a Unicode-capable terminal, try passing the `--pretty` option to pretty-print
 expressions using the the more common logical symbols.
 
-    $ hatt --evaluate="(P -> (Q | ~R))" --pretty
+    $ hatt --evaluate="P -> (Q | ~R)" --pretty
     P Q R | (P → (Q ∨ ¬R))
     ----------------------
     T T T | F
