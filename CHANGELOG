@@ -1,6 +1,13 @@
 Hatt changelog
 ==============
 
+Version 1.5.0
+-------------
+
+* Added a module to perform conversions of expressions to various normal forms,
+  including negation normal form, conjunctive normal form and disjunctive normal
+  form.
+
 Version 1.4.0
 -------------
 
