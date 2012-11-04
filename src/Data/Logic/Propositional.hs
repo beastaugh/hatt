@@ -24,6 +24,7 @@ module Data.Logic.Propositional
     , variables
     , toNNF
     , toCNF
+    , toDNF
     ) where
 
 import Data.Logic.Propositional.Core
