@@ -3,6 +3,7 @@
 
 module Data.Logic.Propositional.NormalForms
     ( toNNF
+    , toCNF
     ) where
 
 import Data.Logic.Propositional.Core
@@ -28,6 +29,14 @@ toNNF (Negation (Biconditional exp1 exp2)) = let a = exp1 `disj` exp2
                                                  b = neg exp1 `disj` neg exp2
                                              in toNNF $ a `conj` b
 
+toCNF :: Expr -> Expr
+toCNF = toCNF' . toNNF
+  where
+    toCNF' :: Expr -> Expr
+    toCNF' (Conjunction exp1 exp2) = toCNF' exp1 `conj` toCNF' exp2
+    toCNF' (Disjunction exp1 exp2) = toCNF' exp1 `dist` toCNF' exp2
+    toCNF' expr                    = expr
+
 neg :: Expr -> Expr
 neg = Negation
 
@@ -36,3 +45,8 @@ disj = Disjunction
 
 conj :: Expr -> Expr -> Expr
 conj = Conjunction
+
+dist :: Expr -> Expr -> Expr
+dist (Conjunction e11 e12) e2 = (e11 `dist` e2) `conj` (e12 `dist` e2)
+dist e1 (Conjunction e21 e22) = (e1 `dist` e21) `conj` (e1 `dist` e22)
+dist e1 e2                    = e1 `disj` e2

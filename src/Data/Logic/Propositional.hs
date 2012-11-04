@@ -23,6 +23,7 @@ module Data.Logic.Propositional
     , truthTableP
     , variables
     , toNNF
+    , toCNF
     ) where
 
 import Data.Logic.Propositional.Core
