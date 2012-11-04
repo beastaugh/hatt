@@ -22,8 +22,10 @@ module Data.Logic.Propositional
     , truthTable
     , truthTableP
     , variables
+    , toNNF
     ) where
 
 import Data.Logic.Propositional.Core
 import Data.Logic.Propositional.Parser
 import Data.Logic.Propositional.Tables
+import Data.Logic.Propositional.NormalForms

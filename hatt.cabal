@@ -32,7 +32,8 @@ Library
   Exposed-modules:  Data.Logic.Propositional
   Other-modules:    Data.Logic.Propositional.Core,
                     Data.Logic.Propositional.Parser,
-                    Data.Logic.Propositional.Tables
+                    Data.Logic.Propositional.Tables,
+                    Data.Logic.Propositional.NormalForms
 
 Executable hatt
   Hs-Source-Dirs:   src
