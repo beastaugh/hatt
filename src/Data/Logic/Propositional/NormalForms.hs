@@ -1,4 +1,3 @@
-{-# OPTIONS_GHC -fno-warn-unused-do-bind #-}
 {-# OPTIONS_HADDOCK hide #-}
 
 module Data.Logic.Propositional.NormalForms
