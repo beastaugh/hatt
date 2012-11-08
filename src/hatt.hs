@@ -150,14 +150,25 @@ replHelpText printer = unlines
   , "For example, if you enter \"(A -> B)\" at the prompt, Hatt will print the"
   , "truth table for that expression. Here's an example console session."
   , ""
-  , "    > A | B"
-  , indentBy 4 $ truthTableP printer (Disjunction (Variable "A") (Variable "B"))
- ++ "> P -> (Q & R)\n"
- ++ truthTableP printer (Conditional
-                          (Variable "P")
-                          (Conjunction (Variable "Q") (Variable "R")))
+  , "    > " ++ showAscii exp1
+  , indentBy 4 $ truthTableP printer exp1
+ ++ "> " ++ showAscii exp2 ++ "\n"
+ ++ truthTableP printer exp2
+  , "You can also convert expressions to different normal forms: negation"
+  , "normal form, conjunctive normal form and disjunctive normal form. To do"
+  , "this just prepend the expression you want to convert with \"nnf\", \"cnf\""
+  , "or \"dnf\". For example,"
+  , ""
+  , "    > nnf " ++ showAscii exp3
+  , "    " ++ (fst printer . toNNF) exp3
+  , ""
   , "If none of this makes any sense, try reading the README file."
   ]
+  where
+      exp1 = Disjunction (Variable "A") (Variable "B")
+      exp2 = Conditional (Variable "P") exp4
+      exp3 = Negation exp2
+      exp4 = Conjunction (Variable "Q") (Variable "R")
 
 selectPrinter :: ProgramMode -> Printer
 selectPrinter m = let expPrinter   = if pretty m then show else showAscii
