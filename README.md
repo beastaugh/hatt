@@ -116,13 +116,27 @@ If you pass the `--coloured` flag, `hatt` will colour the truth values in the
 tables which it prints: green for true, red for false. You can enable colouring
 during interactive mode by using the `colour` command.
 
+You can print out the normal forms of expressions too, by prefixing an
+expression with `nnf`, `dnf` or `cnf`.
+
+    $ hatt --pretty
+    > nnf ~(P -> (Q & R))
+    (P ∧ (¬Q ∨ ¬R))
+
+The three supported normal forms are [negation normal form], [conjunctive normal
+form] and [disjunctive normal form].
+
 
 Using Hatt in other programs
 ----------------------------
 
 Hatt exposes the `Data.Logic.Propositional` module, which provides a simple API
-for parsing, evaluating, and printing truth tables.
+for parsing, evaluating, and printing truth tables, and for converting logical
+expressions into normal forms.
 
 
 [Hatt]:    http://extralogical.net/projects/hatt
 [Hackage]: http://hackage.haskell.org/
+[negation normal form]: http://en.wikipedia.org/wiki/Negation_normal_form
+[conjunctive normal form]: http://en.wikipedia.org/wiki/Conjunctive_normal_form
+[disjunctive normal form]: http://en.wikipedia.org/wiki/Disjunctive_normal_form
