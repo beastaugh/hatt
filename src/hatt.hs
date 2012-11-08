@@ -6,15 +6,24 @@ import Data.Logic.Propositional
 import Data.Logic.Propositional.Tables
 
 import Control.Monad (when, unless)
-import Data.Char (isSpace, toLower)
+import Data.Char (toLower)
+import Data.List (intersperse)
 import System.Console.CmdArgs
-import System.Console.Haskeline (InputT, runInputT, defaultSettings, getInputLine, outputStr, outputStrLn)
+import System.Console.Haskeline
+    ( InputT
+    , runInputT
+    , defaultSettings
+    , getInputLine
+    , outputStr
+    , outputStrLn
+    )
 
 data Command = Exit
              | Help
              | Pretty
              | Coloured
              | Eval Expr
+             | Convert NormalForm Expr
              | Error String
 
 data ProgramMode = ProgramMode
@@ -23,6 +32,8 @@ data ProgramMode = ProgramMode
   , pretty      :: Bool
   , coloured    :: Bool
   } deriving (Show, Data, Typeable)
+
+data NormalForm = NNF | CNF | DNF
 
 programMode :: ProgramMode
 programMode = ProgramMode
@@ -58,17 +69,19 @@ repl mode = do
     case minput of
       Nothing  -> return ()
       Just cmd -> case parseCommand cmd of
-        Exit        -> return ()
-        Help        -> outputStr (replHelpText printer)
-                       >> repl mode
-        Pretty      -> outputStrLn ppMessage
-                       >> repl (mode {pretty = not isPretty})
-        Coloured    -> outputStrLn cpMessage
-                       >> repl (mode {coloured = not isColoured})
-        (Eval expr) -> outputStr (truthTableP printer expr)
-                       >> repl mode
-        (Error err) -> outputStrLn ("Error: " ++ err)
-                       >> repl mode
+        Exit              -> return ()
+        Help              -> outputStr (replHelpText printer)
+                             >> repl mode
+        Pretty            -> outputStrLn ppMessage
+                             >> repl (mode {pretty = not isPretty})
+        Coloured          -> outputStrLn cpMessage
+                             >> repl (mode {coloured = not isColoured})
+        (Eval expr)       -> outputStr (truthTableP printer expr)
+                             >> repl mode
+        (Convert nf expr) -> outputStrLn (toNFStr nf (fst printer) expr)
+                             >> repl mode
+        (Error err)       -> outputStrLn ("Error: " ++ err)
+                             >> repl mode
   where
     printer    = selectPrinter mode
     isPretty   = pretty mode
@@ -82,19 +95,28 @@ eval p str = case parseExpr "" str of
                Right expr -> truthTableP p expr
 
 parseCommand :: String -> Command
-parseCommand input = case cmd . words . dropWhile isSpace $ input of
+parseCommand input = case cmd . words $ input of
                        ""       -> Error "you must enter an expression or a command."
                        "exit"   -> Exit
                        "help"   -> Help
                        "pretty" -> Pretty
                        "colour" -> Coloured
-                       _        -> eval_ input
+                       "nnf"    -> eval_ (Convert NNF) (getExpr input)
+                       "cnf"    -> eval_ (Convert CNF) (getExpr input)
+                       "dnf"    -> eval_ (Convert DNF) (getExpr input)
+                       _        -> eval_ Eval input
   where
-    cmd []    = ""
-    cmd ws    = map toLower . head $ ws
-    eval_ str = case parseExpr "" str of
-                  Left  err  -> Error $ "parse error at " ++ show err
-                  Right expr -> Eval expr
+    cmd []       = ""
+    cmd ws       = map toLower . head $ ws
+    eval_ dt str = case parseExpr "hatt" str of
+                     Left  err  -> Error $ "parse error at " ++ show err
+                     Right expr -> dt expr
+    getExpr      = concat . intersperse " " . tail . words
+
+toNFStr :: NormalForm -> (Expr -> String) -> Expr -> String
+toNFStr NNF p = p . toNNF
+toNFStr CNF p = p . toCNF
+toNFStr DNF p = p . toCNF
 
 replIntroText :: String
 replIntroText = unwords
