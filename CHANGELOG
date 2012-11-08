@@ -6,7 +6,8 @@ Version 1.5.0
 
 * Added a module to perform conversions of expressions to various normal forms,
   including negation normal form, conjunctive normal form and disjunctive normal
-  form.
+  form. Its use is supported in interactive mode by prefixing an expression with
+  "nnf", "cnf" or "dnf".
 
 Version 1.4.0
 -------------
