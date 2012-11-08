@@ -8,6 +8,10 @@ module Data.Logic.Propositional.NormalForms
 
 import Data.Logic.Propositional.Core
 
+-- | The 'toNNF' function converts expressions to negation normal form. This
+-- function is total: it's defined for all expressions, not just those which
+-- only use negation, conjunction and disjunction, although all expressions in
+-- negation normal form do in fact only use those connectives.
 toNNF :: Expr -> Expr
 toNNF expr@(Variable _)                    = expr
 toNNF expr@(Negation (Variable _))         = expr
@@ -29,6 +33,13 @@ toNNF (Negation (Biconditional exp1 exp2)) = let a = exp1 `disj` exp2
                                                  b = neg exp1 `disj` neg exp2
                                              in toNNF $ a `conj` b
 
+-- | The 'toCNF' function converts expressions to conjunctive normal form: a
+-- conjunction of clauses, where a clause is a disjunction of literals
+-- (variables and negated variables).
+--
+-- The conversion is carried out by first converting the expression into
+-- negation normal form, and then applying de Morgan's laws and the distributive
+-- law.
 toCNF :: Expr -> Expr
 toCNF = toCNF' . toNNF
   where
@@ -42,6 +53,13 @@ toCNF = toCNF' . toNNF
     dist e1 (Conjunction e21 e22) = (e1 `dist` e21) `conj` (e1 `dist` e22)
     dist e1 e2                    = e1 `disj` e2
 
+-- | The 'toDNF' function converts expressions to disjunctive normal form: a
+-- disjunction of clauses, where a clause is a conjunction of literals
+-- (variables and negated variables).
+--
+-- The conversion is carried out by first converting the expression into
+-- negation normal form, and then applying de Morgan's laws and the distributive
+-- law.
 toDNF :: Expr -> Expr
 toDNF = toDNF' . toNNF
   where
