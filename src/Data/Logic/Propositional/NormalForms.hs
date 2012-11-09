@@ -12,6 +12,13 @@ import Data.Logic.Propositional.Core
 -- function is total: it's defined for all expressions, not just those which
 -- only use negation, conjunction and disjunction, although all expressions in
 -- negation normal form do in fact only use those connectives.
+--
+-- The conversion is carried out by replacing any condtitionals or
+-- biconditionals with equivalent expressions using only negation, conjunction
+-- and disjunction. Then de Morgan's laws are applied to convert negated
+-- conjunctions and disjunctions into the conjunction or disjunction of the
+-- negation of their conjuncts: @¬(φ ∧ ψ)@ is converted to @(¬φ ∨ ¬ψ)@
+-- while @¬(φ ∨ ψ)@ becomes @(¬φ ∧ ¬ψ)@.
 toNNF :: Expr -> Expr
 toNNF expr@(Variable _)                    = expr
 toNNF expr@(Negation (Variable _))         = expr
@@ -38,8 +45,10 @@ toNNF (Negation (Biconditional exp1 exp2)) = let a = exp1 `disj` exp2
 -- (variables and negated variables).
 --
 -- The conversion is carried out by first converting the expression into
--- negation normal form, and then applying de Morgan's laws and the distributive
--- law.
+-- negation normal form, and then applying the distributive law.
+--
+-- Because it first applies 'toNNF', it is a total function and can handle
+-- expressions which include conditionals and biconditionals.
 toCNF :: Expr -> Expr
 toCNF = toCNF' . toNNF
   where
@@ -58,8 +67,10 @@ toCNF = toCNF' . toNNF
 -- (variables and negated variables).
 --
 -- The conversion is carried out by first converting the expression into
--- negation normal form, and then applying de Morgan's laws and the distributive
--- law.
+-- negation normal form, and then applying the distributive law.
+--
+-- Because it first applies 'toNNF', it is a total function and can handle
+-- expressions which include conditionals and biconditionals.
 toDNF :: Expr -> Expr
 toDNF = toDNF' . toNNF
   where
