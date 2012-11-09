@@ -7,7 +7,6 @@ import Data.Logic.Propositional.Tables
 
 import Control.Monad (when, unless)
 import Data.Char (toLower)
-import Data.List (intersperse)
 import System.Console.CmdArgs
 import System.Console.Haskeline
     ( InputT
@@ -111,7 +110,7 @@ parseCommand input = case cmd . words $ input of
     eval_ dt str = case parseExpr "hatt" str of
                      Left  err  -> Error $ "parse error at " ++ show err
                      Right expr -> dt expr
-    getExpr      = concat . intersperse " " . tail . words
+    getExpr      = unwords . tail . words
 
 toNFStr :: NormalForm -> (Expr -> String) -> Expr -> String
 toNFStr NNF p = p . toNNF
