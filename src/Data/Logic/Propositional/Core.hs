@@ -7,7 +7,7 @@ import Prelude hiding (lookup)
 import Control.Monad (liftM, liftM2, replicateM)
 import Data.Char (chr)
 import Data.Functor ((<$>))
-import Data.List (nub, sort)
+import Data.List (group, sort)
 import Data.Map (Map, fromList, lookup)
 import Data.Maybe (fromMaybe)
 import Test.QuickCheck (Arbitrary, Gen, arbitrary, elements, oneof, sized)
@@ -95,7 +95,7 @@ variables expr = let vars_ (Variable      v)     vs = v : vs
                      vars_ (Disjunction   e1 e2) vs = vars_ e1 vs ++ vars_ e2 vs
                      vars_ (Conditional   e1 e2) vs = vars_ e1 vs ++ vars_ e2 vs
                      vars_ (Biconditional e1 e2) vs = vars_ e1 vs ++ vars_ e2 vs
-                 in  sort . nub $ vars_ expr []
+                 in  map head . group . sort $ vars_ expr []
 
 -- | Determines whether two expressions are extensionally equivalent (that is,
 -- have the same values under all interpretations).
