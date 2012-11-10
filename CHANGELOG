@@ -4,10 +4,16 @@ Hatt changelog
 Version 1.5.0
 -------------
 
+* Breaking API change: variables are now represented by a newtype wrapper `Var`
+  around `Char`s, rather than just a `String`. This made it easier to write a
+  good QuickCheck instance for this type.
+* Added QuickCheck instances for the `Expr` and `Var` datatypes.
 * Added a module to perform conversions of expressions to various normal forms,
   including negation normal form, conjunctive normal form and disjunctive normal
   form. Its use is supported in interactive mode by prefixing an expression with
-  "nnf", "cnf" or "dnf".
+  "nnf", "cnf" or "dnf". Tests for the module are included and can be run with
+  `cabal test`.
+* The `values` function is now exported.
 
 Version 1.4.0
 -------------
