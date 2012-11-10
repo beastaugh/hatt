@@ -5,7 +5,7 @@ module Data.Logic.Propositional.Parser
     ( parseExpr
     ) where
 
-import Data.Logic.Propositional.Core (Expr (..))
+import Data.Logic.Propositional.Core (Expr (..), Var (..))
 
 import Text.ParserCombinators.Parsec
     ((<|>), char, choice, eof, letter, parse, spaces, string, try)
@@ -50,7 +50,7 @@ expr = choice [binaryP, negation, variable]
 
 variable :: GenParser Char st Expr
 variable = do c <- letter
-              return $ Variable [c]
+              return $ Variable (Var c)
 
 negation :: GenParser Char st Expr
 negation = do char '~'

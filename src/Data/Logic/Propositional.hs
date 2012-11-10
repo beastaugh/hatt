@@ -8,6 +8,7 @@
 -- conjunction, disjunction, material implication and logical equivalence.
 module Data.Logic.Propositional
     ( Expr (..)
+    , Var (..)
     , Mapping
     
     , equivalent

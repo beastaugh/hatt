@@ -25,7 +25,7 @@ truthTable = truthTableP (show, colourBool)
 truthTableP :: Printer -> Expr -> String
 truthTableP (expPrinter, boolPrinter) expr = unlines [header, separator, body]
   where
-    header    = unwords vs ++ " | " ++ expPrinter expr
+    header    = (unwords . map show) vs ++ " | " ++ expPrinter expr
     body      = init . unlines $ map (showAssignment boolPrinter expr) as
     separator = concat $ replicate sepLength "-"
     sepLength = length vs * 2 + length (expPrinter expr) + 2

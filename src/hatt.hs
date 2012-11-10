@@ -164,10 +164,10 @@ replHelpText printer = unlines
   , "If none of this makes any sense, try reading the README file."
   ]
   where
-      exp1 = Disjunction (Variable "A") (Variable "B")
-      exp2 = Conditional (Variable "P") exp4
+      exp1 = Disjunction (Variable $ Var 'A') (Variable $ Var 'B')
+      exp2 = Conditional (Variable $ Var 'P') exp4
       exp3 = Negation exp2
-      exp4 = Conjunction (Variable "Q") (Variable "R")
+      exp4 = Conjunction (Variable $ Var 'Q') (Variable $ Var 'R')
 
 selectPrinter :: ProgramMode -> Printer
 selectPrinter m = let expPrinter   = if pretty m then show else showAscii

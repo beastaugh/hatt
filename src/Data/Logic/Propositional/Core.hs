@@ -4,12 +4,21 @@ module Data.Logic.Propositional.Core where
 
 import Prelude hiding (lookup)
 
-import Control.Monad (replicateM)
+import Control.Monad (liftM, liftM2, replicateM)
+import Data.Char (chr)
+import Data.Functor ((<$>))
 import Data.List (nub)
 import Data.Map (Map, fromList, lookup)
 import Data.Maybe (fromMaybe)
+import Test.QuickCheck (Arbitrary, Gen, arbitrary, elements, oneof, sized)
 
-data Expr = Variable      String
+newtype Var = Var Char
+    deriving (Eq, Ord)
+
+instance Show Var where
+    show (Var v) = [v]
+
+data Expr = Variable      Var
           | Negation      Expr
           | Conjunction   Expr Expr
           | Disjunction   Expr Expr
@@ -18,14 +27,42 @@ data Expr = Variable      String
           deriving Eq
 
 instance Show Expr where
-  show (Variable      name)      = name
+  show (Variable      name)      = show name
   show (Negation      expr)      = '¬' : show expr
   show (Conjunction   exp1 exp2) = showBC "∧" exp1 exp2
   show (Disjunction   exp1 exp2) = showBC "∨" exp1 exp2
   show (Conditional   exp1 exp2) = showBC "→" exp1 exp2
   show (Biconditional exp1 exp2) = showBC "↔" exp1 exp2
 
-type Mapping = Map String Bool
+instance Arbitrary Var where
+    arbitrary = liftM Var . elements . map chr $ [65..90] ++ [97..122]
+
+instance Arbitrary Expr where
+    arbitrary = randomExpr
+
+randomExpr :: Gen Expr
+randomExpr = sized randomExpr'
+
+randomExpr' :: Int -> Gen Expr
+randomExpr' n | n > 0     = oneof [ randomVar
+                                  , randomNeg boundedExpr
+                                  , randomBin boundedExpr
+                                  ]
+              | otherwise = randomVar
+  where
+    boundedExpr = randomExpr' (n `div` 2)
+
+randomBin :: Gen Expr -> Gen Expr
+randomBin rExp = oneof . map (\c -> liftM2 c rExp rExp)
+               $ [Conjunction, Disjunction, Conditional, Biconditional]
+
+randomNeg :: Gen Expr -> Gen Expr
+randomNeg rExp = Negation <$> rExp
+
+randomVar :: Gen Expr
+randomVar = Variable <$> arbitrary
+
+type Mapping = Map Var Bool
 
 -- | In order to interpret an expression, a mapping from variables to truth
 -- values needs to be provided. Truth values are compositional; that's to say,
@@ -51,7 +88,7 @@ assignments expr = let vs = variables expr
                    in  map (fromList . zip vs) ps
 
 -- | Lists the names of variables present in an expression.
-variables :: Expr -> [String]
+variables :: Expr -> [Var]
 variables expr = let vars_ (Variable      v)     vs = v : vs
                      vars_ (Negation      e)     vs = vars_ e vs
                      vars_ (Conjunction   e1 e2) vs = vars_ e1 vs ++ vars_ e2 vs
@@ -87,7 +124,7 @@ values expr = map (interpret expr) (assignments expr)
 -- pretty-prints expressions using logical symbols only present in extended
 -- character sets).
 showAscii :: Expr -> String
-showAscii (Variable      name)      = name
+showAscii (Variable      name)      = show name
 showAscii (Negation      expr)      = '~' : showAscii expr
 showAscii (Conjunction   exp1 exp2) = showBCA "&"   exp1 exp2
 showAscii (Disjunction   exp1 exp2) = showBCA "|"   exp1 exp2
