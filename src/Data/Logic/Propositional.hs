@@ -14,6 +14,7 @@ module Data.Logic.Propositional
     , equivalent
     , interpret
     , assignments
+    , values
     , isContingent
     , isContradiction
     , isTautology
