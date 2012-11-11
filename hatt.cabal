@@ -15,7 +15,7 @@ Maintainer:         benedict@eastaugh.net
 Copyright:          (c) 2012 Benedict Eastaugh
 Homepage:           http://extralogical.net/projects/hatt
 Category:           Logic
-Cabal-version:      >= 1.6
+Cabal-version:      >= 1.8
 
 Build-type:         Simple
 Extra-source-files: README.md
