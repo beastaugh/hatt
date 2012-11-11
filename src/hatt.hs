@@ -4,6 +4,7 @@ module Main (main) where
 
 import Data.Logic.Propositional
 import Data.Logic.Propositional.Tables
+import Data.Logic.Propositional.NormalForms
 
 import Control.Monad (when, unless)
 import Data.Char (toLower)

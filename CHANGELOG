@@ -12,7 +12,12 @@ Version 1.5.0
   including negation normal form, conjunctive normal form and disjunctive normal
   form. Its use is supported in interactive mode by prefixing an expression with
   "nnf", "cnf" or "dnf". Tests for the module are included and can be run with
-  `cabal test`.
+  `cabal test`. The module is exported as `Data.Logic.Propositional.NormalForms`
+  and must be imported separately.
+* The `Data.Logic.Propositional.Tables` module is now exported by the library.
+  Its `truthTable` and `truthTableP` functions are still exported by the main
+  `Data.Logic.Propositional` module (as well as by the newly exposed module) for
+  backwards compatibility.
 * The `values` function is now exported.
 
 Version 1.4.0

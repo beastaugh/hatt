@@ -15,21 +15,20 @@ module Data.Logic.Propositional
     , interpret
     , assignments
     , values
+    , variables
     , isContingent
     , isContradiction
     , isTautology
+    
     , parseExpr
+    
     , show
     , showAscii
+    
     , truthTable
     , truthTableP
-    , variables
-    , toNNF
-    , toCNF
-    , toDNF
     ) where
 
 import Data.Logic.Propositional.Core
 import Data.Logic.Propositional.Parser
-import Data.Logic.Propositional.Tables
-import Data.Logic.Propositional.NormalForms
+import Data.Logic.Propositional.Tables (truthTable, truthTableP)

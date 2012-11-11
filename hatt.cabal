@@ -32,25 +32,25 @@ Library
                     parsec         >= 2.1 && < 3.2,
                     QuickCheck     >= 2.4,
                     ansi-wl-pprint >= 0.6 && < 0.7
-  Exposed-modules:  Data.Logic.Propositional
-  Other-modules:    Data.Logic.Propositional.Core,
-                    Data.Logic.Propositional.Parser,
+  Exposed-modules:  Data.Logic.Propositional,
                     Data.Logic.Propositional.Tables,
                     Data.Logic.Propositional.NormalForms
+  Other-modules:    Data.Logic.Propositional.Core,
+                    Data.Logic.Propositional.Parser
 
 Executable hatt
-  Hs-Source-Dirs:   src
-  Main-Is:          hatt.hs
+  Main-Is:          src/hatt.hs
   GHC-options:      -Wall
   Build-depends:    base           >= 4 && < 5,
+                    hatt,
                     cmdargs        >= 0.7,
                     haskeline      >= 0.6 && < 0.7
 
 Test-Suite test-hatt
-  Hs-Source-Dirs:   test, src
   Type:             exitcode-stdio-1.0
-  Main-is:          main.hs
+  Main-is:          test/main.hs
   GHC-options:      -Wall
   Build-depends:    base           >= 4 && < 5,
+                    hatt,
                     test-framework >= 0.4.1,
                     test-framework-quickcheck2

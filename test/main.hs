@@ -1,6 +1,7 @@
 module Main (main) where
 
 import Data.Logic.Propositional
+import Data.Logic.Propositional.NormalForms
 
 import Test.Framework as TF (defaultMain, testGroup, Test)
 import Test.Framework.Providers.QuickCheck2 (testProperty)
