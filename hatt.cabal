@@ -18,7 +18,8 @@ Category:           Logic
 Cabal-version:      >= 1.8
 
 Build-type:         Simple
-Extra-source-files: README.md
+Extra-source-files: README.md,
+                    CHANGELOG
 
 Source-repository head
   Type:             git
