@@ -1,5 +1,7 @@
-{-# OPTIONS_HADDOCK hide #-}
-
+-- | The functions exposed by this module convert expressions of type 'Expr'
+-- into different normal forms: negation normal form via 'toNNF', conjunctive
+-- normal form via 'toCNF' and disjunctive normal form via 'toDNF'. All these
+-- functions are total.
 module Data.Logic.Propositional.NormalForms
     ( toNNF
     , toCNF

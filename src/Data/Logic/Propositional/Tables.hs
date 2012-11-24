@@ -1,5 +1,9 @@
-{-# OPTIONS_HADDOCK hide #-}
-
+-- | This module contains the truth table generating functionality of Hatt. The
+-- core function it exports is 'truthTable' which prints the truth table of the
+-- given expression. 'truthTableP' is a configurable version which allows one to
+-- select how to print expressions and truth values. This gives one the option
+-- of, for example, colouring outputs and changing the symbols used to represent
+-- the logical connectives.
 module Data.Logic.Propositional.Tables
     ( Printer
     , colourBool
@@ -38,10 +42,15 @@ showAssignment printer expr a = showVarValues ++ " | " ++ showExprValue
     showVarValues = unwords $ fold ((:) . printer) [] a
     showExprValue = printer $ interpret expr a
 
+-- | Prints @T@ for 'True' and @F@ for 'False'.
 showBool :: Bool -> String
 showBool True  = "T"
 showBool False = "F"
 
+-- | Prints a green @T@ for 'True' and a red @F@ for 'False'. This is used when
+-- producing a string representation of a truth table with 'truthTable'. It can
+-- also be used as (as the second component of a 'Printer' pair) as an argument
+-- to the configurable 'truthTableP' function.
 colourBool :: Bool -> String
 colourBool True  = show . green . text $ "T"
 colourBool False = show . red . text $ "F"
