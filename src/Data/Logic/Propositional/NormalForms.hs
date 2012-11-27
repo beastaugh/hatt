@@ -6,6 +6,7 @@ module Data.Logic.Propositional.NormalForms
     ( toNNF
     , toCNF
     , toDNF
+    , simplify
     ) where
 
 import Data.Logic.Propositional.Core
@@ -52,7 +53,7 @@ toNNF (Negation (Biconditional exp1 exp2)) = let a = exp1 `disj` exp2
 -- Because it first applies 'toNNF', it is a total function and can handle
 -- expressions which include conditionals and biconditionals.
 toCNF :: Expr -> Expr
-toCNF = toCNF' . toNNF
+toCNF = simplify . toCNF' . toNNF
   where
     toCNF' :: Expr -> Expr
     toCNF' (Conjunction exp1 exp2) = toCNF' exp1 `conj` toCNF' exp2
@@ -74,7 +75,7 @@ toCNF = toCNF' . toNNF
 -- Because it first applies 'toNNF', it is a total function and can handle
 -- expressions which include conditionals and biconditionals.
 toDNF :: Expr -> Expr
-toDNF = toDNF' . toNNF
+toDNF = simplify. toDNF' . toNNF
   where
     toDNF' :: Expr -> Expr
     toDNF' (Conjunction exp1 exp2) = toDNF' exp1 `dist` toDNF' exp2
@@ -85,6 +86,32 @@ toDNF = toDNF' . toNNF
     dist (Disjunction e11 e12) e2 = (e11 `dist` e2) `disj` (e12 `dist` e2)
     dist e1 (Disjunction e21 e22) = (e1 `dist` e21) `disj` (e1 `dist` e22)
     dist e1 e2                    = e1 `conj` e2
+
+-- | Performs some simplifications of expressions. The function removes
+-- contradictory disjuncts from disjunctions and tautologous conjuncts from
+-- conjunctions. When one disjunct implies the other, the disjunction is
+-- replaced by the weaker disjunct. Conversely, when one conjunct implies the
+-- other the conjunction is replaced by the stronger conjunct. Instances of
+-- double negation are eliminated.
+--
+-- Conditionals and biconditionals are unmodified, but as 'simplify' is
+-- generally intended as an internal function for use in the 'toCNF' and 'toDNF'
+-- functions this should be considered unproblematic.
+simplify :: Expr -> Expr
+simplify (Disjunction e1 e2) | isContradiction e1 = simplify e2
+                             | isContradiction e2 = simplify e1
+                             | implies [e1] e2    = simplify e2
+                             | implies [e2] e1    = simplify e1
+                             | otherwise          =
+                                 simplify e1 `disj` simplify e2
+simplify (Conjunction e1 e2) | isTautology e1     = simplify e2
+                             | isTautology e2     = simplify e1
+                             | implies [e1] e2    = simplify e1
+                             | implies [e2] e1    = simplify e2
+                             | otherwise          =
+                                 simplify e1 `conj` simplify e2
+simplify (Negation (Negation e))                  = simplify e
+simplify e                                        = e
 
 neg :: Expr -> Expr
 neg = Negation
