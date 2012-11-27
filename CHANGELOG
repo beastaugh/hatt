@@ -1,6 +1,26 @@
 Hatt changelog
 ==============
 
+Version 1.6.0
+-------------
+
+* Breaking API change: the `assignments` function now takes a list of
+  expressions rather than a single expression.
+* Fixed a bug in the `toNNF` function: doubly-negated expressions are now
+  converted into normal form rather than just having the double negation
+  removed.
+* Added an `equivalents` function checking whether a list of propositions are
+  all mutually equivalent.
+* Added an `implies` function checking whether a set of expressions semantically
+  entail some expression.
+* Added a `simplify` function to the `NormalForms` module, which simplifies
+  expressions by removing contradictory disjuncts and tautologous conjuncts, as
+  well as some other simplifications.
+* The `toCNF` and `toDNF` functions now further simplify their output using the
+  `simplify` function.
+* Limit number of expressions tested by QuickCheck to ensure the test suite runs
+  quickly and doesn't eat the test machine.
+
 Version 1.5.0
 -------------
 
