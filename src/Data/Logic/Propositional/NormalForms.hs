@@ -24,7 +24,7 @@ import Data.Logic.Propositional.Core
 toNNF :: Expr -> Expr
 toNNF expr@(Variable _)                    = expr
 toNNF expr@(Negation (Variable _))         = expr
-toNNF (Negation (Negation expr))           = expr
+toNNF (Negation (Negation expr))           = toNNF expr
 
 toNNF (Conjunction exp1 exp2)              = toNNF exp1 `conj` toNNF exp2
 toNNF (Negation (Conjunction exp1 exp2))   = toNNF $ neg exp1 `disj` neg exp2
