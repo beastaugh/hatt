@@ -12,6 +12,8 @@ module Data.Logic.Propositional
     , Mapping
     
     , equivalent
+    , equivalents
+    , implies
     , interpret
     , assignments
     , values

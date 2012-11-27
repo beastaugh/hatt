@@ -7,7 +7,7 @@ import Prelude hiding (lookup)
 import Control.Monad (liftM, liftM2, replicateM)
 import Data.Char (chr)
 import Data.Functor ((<$>))
-import Data.List (group, sort)
+import Data.List (group, nub, sort)
 import Data.Map (Map, fromList, lookup)
 import Data.Maybe (fromMaybe)
 import Test.QuickCheck (Arbitrary, Gen, arbitrary, elements, oneof, sized)
@@ -27,12 +27,12 @@ data Expr = Variable      Var
           deriving Eq
 
 instance Show Expr where
-  show (Variable      name)      = show name
-  show (Negation      expr)      = '¬' : show expr
-  show (Conjunction   exp1 exp2) = showBC "∧" exp1 exp2
-  show (Disjunction   exp1 exp2) = showBC "∨" exp1 exp2
-  show (Conditional   exp1 exp2) = showBC "→" exp1 exp2
-  show (Biconditional exp1 exp2) = showBC "↔" exp1 exp2
+    show (Variable      name)      = show name
+    show (Negation      expr)      = '¬' : show expr
+    show (Conjunction   exp1 exp2) = showBC "∧" exp1 exp2
+    show (Disjunction   exp1 exp2) = showBC "∨" exp1 exp2
+    show (Conditional   exp1 exp2) = showBC "→" exp1 exp2
+    show (Biconditional exp1 exp2) = showBC "↔" exp1 exp2
 
 instance Arbitrary Var where
     arbitrary = liftM Var . elements . map chr $ [65..90] ++ [97..122]
@@ -81,11 +81,11 @@ interpret (Disjunction   exp1 exp2) vs = interpret exp1 vs || interpret exp2 vs
 interpret (Conditional   exp1 exp2) vs = not (interpret exp1 vs) || interpret exp2 vs
 interpret (Biconditional exp1 exp2) vs = interpret exp1 vs == interpret exp2 vs
 
--- | Generates the possible assignments of variables in an expression.
-assignments :: Expr -> [Mapping]
-assignments expr = let vs = variables expr
-                       ps = replicateM (length vs) [True, False]
-                   in  map (fromList . zip vs) ps
+-- | Generates the possible assignments of variables in a list of expressions.
+assignments :: [Expr] -> [Mapping]
+assignments es = let vs = concatMap variables es
+                     ps = replicateM (length vs) [True, False]
+                 in  nub $ map (fromList . zip vs) ps
 
 -- | Lists the names of variables present in an expression.
 variables :: Expr -> [Var]
@@ -100,7 +100,26 @@ variables expr = let vars_ (Variable      v)     vs = v : vs
 -- | Determines whether two expressions are extensionally equivalent (that is,
 -- have the same values under all interpretations).
 equivalent :: Expr -> Expr -> Bool
-equivalent exp1 exp2 = values exp1 == values exp2
+equivalent e1 e2 = equivalents [e1, e2]
+
+-- | Determine whether a list of expressions have the same values under all
+-- interpretations.
+equivalents :: [Expr] -> Bool
+equivalents es = all (== head vs) (tail vs)
+  where
+    as    = assignments es
+    val e = map (interpret e) as
+    vs    = map val es
+
+-- | Check whether the consequent @q@ is a semantic consequence of the
+-- antecedents @ps@, that is, whenever the antecedents are all true then the
+-- consequent is also true.
+implies :: [Expr] -> Expr -> Bool
+ps `implies` q = all (cond ps q) $ assignments (q : ps)
+  where
+    cond as c a = let falseAntecdent = not . and . map (`interpret` a) $ as
+                      trueConsequent = interpret c a
+                  in falseAntecdent || trueConsequent
 
 -- | Determines whether an expression is tautological.
 isTautology :: Expr -> Bool
@@ -118,7 +137,7 @@ isContingent expr = not (isTautology expr || isContradiction expr)
 -- | Lists the values of an expression under all interpretations (that is, all
 -- assignments of values to variables).
 values :: Expr -> [Bool]
-values expr = map (interpret expr) (assignments expr)
+values expr = map (interpret expr) (assignments [expr])
 
 -- | Represents expressions using only ASCII characters (the 'show' function
 -- pretty-prints expressions using logical symbols only present in extended

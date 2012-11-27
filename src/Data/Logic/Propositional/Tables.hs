@@ -33,7 +33,7 @@ truthTableP (expPrinter, boolPrinter) expr = unlines [header, separator, body]
     body      = init . unlines $ map (showAssignment boolPrinter expr) as
     separator = concat $ replicate sepLength "-"
     sepLength = length vs * 2 + length (expPrinter expr) + 2
-    as        = assignments expr
+    as        = assignments [expr]
     vs        = variables   expr
 
 showAssignment :: (Bool -> String) -> Expr -> Mapping -> String
