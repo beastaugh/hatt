@@ -42,7 +42,7 @@ programMode = ProgramMode
   , interactive = False &= help "Enter interactive mode"
   , pretty      = False &= help "Use Unicode logic symbols"
   , coloured    = False &= help "Use colour-coded symbols"
-  } &= summary "Hatt 1.5.0.3, (c) Benedict Eastaugh 2012"
+  } &= summary "Hatt 1.6.0.0, (c) Benedict Eastaugh 2012"
     &= program "hatt"
 
 main :: IO ()
