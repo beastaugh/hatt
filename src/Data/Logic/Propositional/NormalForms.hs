@@ -25,25 +25,25 @@ import Data.Logic.Propositional.Core
 toNNF :: Expr -> Expr
 toNNF = toNNF' . simplify
   where
-    toNNF' expr@(Variable _)                    = expr
-    toNNF' expr@(Negation (Variable _))         = expr
-    toNNF' (Negation (Negation expr))           = toNNF expr
+    toNNF' expr@(Variable _)                = expr
+    toNNF' expr@(Negation (Variable _))     = expr
+    toNNF' (Negation (Negation expr))       = toNNF expr
     
-    toNNF' (Conjunction exp1 exp2)              = toNNF exp1 `conj` toNNF exp2
-    toNNF' (Negation (Conjunction exp1 exp2))   = toNNF $ neg exp1 `disj` neg exp2
+    toNNF' (Conjunction e1 e2)              = toNNF e1 `conj` toNNF e2
+    toNNF' (Negation (Conjunction e1 e2))   = toNNF $ neg e1 `disj` neg e2
     
-    toNNF' (Disjunction exp1 exp2)              = toNNF exp1 `disj` toNNF exp2
-    toNNF' (Negation (Disjunction exp1 exp2))   = toNNF $ neg exp1 `conj` neg exp2
+    toNNF' (Disjunction e1 e2)              = toNNF e1 `disj` toNNF e2
+    toNNF' (Negation (Disjunction e1 e2))   = toNNF $ neg e1 `conj` neg e2
     
-    toNNF' (Conditional exp1 exp2)              = toNNF $ neg exp1 `disj` exp2
-    toNNF' (Negation (Conditional exp1 exp2))   = toNNF $ exp1 `conj` neg exp2
+    toNNF' (Conditional e1 e2)              = toNNF $ neg e1 `disj` e2
+    toNNF' (Negation (Conditional e1 e2))   = toNNF $ e1 `conj` neg e2
     
-    toNNF' (Biconditional exp1 exp2)            = let a = exp1 `conj` exp2
-                                                      b = neg exp1 `conj` neg exp2
-                                                  in toNNF $ a `disj` b
-    toNNF' (Negation (Biconditional exp1 exp2)) = let a = exp1 `disj` exp2
-                                                      b = neg exp1 `disj` neg exp2
-                                                  in toNNF $ a `conj` b
+    toNNF' (Biconditional e1 e2)            = let a = e1 `conj` e2
+                                                  b = neg e1 `conj` neg e2
+                                              in toNNF $ a `disj` b
+    toNNF' (Negation (Biconditional e1 e2)) = let a = e1 `disj` e2
+                                                  b = neg e1 `disj` neg e2
+                                              in toNNF $ a `conj` b
 
 -- | The 'toCNF' function converts expressions to conjunctive normal form: a
 -- conjunction of clauses, where a clause is a disjunction of literals
@@ -58,9 +58,9 @@ toCNF :: Expr -> Expr
 toCNF = simplify . toCNF' . toNNF
   where
     toCNF' :: Expr -> Expr
-    toCNF' (Conjunction exp1 exp2) = toCNF' exp1 `conj` toCNF' exp2
-    toCNF' (Disjunction exp1 exp2) = toCNF' exp1 `dist` toCNF' exp2
-    toCNF' expr                    = expr
+    toCNF' (Conjunction e1 e2) = toCNF' e1 `conj` toCNF' e2
+    toCNF' (Disjunction e1 e2) = toCNF' e1 `dist` toCNF' e2
+    toCNF' expr                = expr
     
     dist :: Expr -> Expr -> Expr
     dist (Conjunction e11 e12) e2 = (e11 `dist` e2) `conj` (e12 `dist` e2)
@@ -80,8 +80,8 @@ toDNF :: Expr -> Expr
 toDNF = simplify. toDNF' . toNNF
   where
     toDNF' :: Expr -> Expr
-    toDNF' (Conjunction exp1 exp2) = toDNF' exp1 `dist` toDNF' exp2
-    toDNF' (Disjunction exp1 exp2) = toDNF' exp1 `disj` toDNF' exp2
+    toDNF' (Conjunction e1 e2) = toDNF' e1 `dist` toDNF' e2
+    toDNF' (Disjunction e1 e2) = toDNF' e1 `disj` toDNF' e2
     toDNF' expr                    = expr
     
     dist :: Expr -> Expr -> Expr
