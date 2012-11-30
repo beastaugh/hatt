@@ -14,7 +14,7 @@ tests =
       [ testGroup "QuickCheck Data.Logic.Propositional"
           [ testProperty "SelfEquiv" propSelfEquiv
           , testProperty "ContradictionImpliesAll" propContradictionImpliesAll
-          , testProperty "NullImpliesTautologies" propNullImpliesTautologies
+          , testProperty "AnyImpliesTautology" propAnyImpliesTautology
           , testProperty "ConjImpliesConjuncts" propConjImpliesConjuncts
           , testProperty "EquivsImplyEachOther" propEquivsImplyEachOther
           ]
@@ -60,9 +60,9 @@ propEquivsImplyEachOther e1 e2 | equivalent e1 e2 = [e1] `implies` e2
 propContradictionImpliesAll :: Expr -> Bool
 propContradictionImpliesAll expr = [falsum] `implies` expr
 
-propNullImpliesTautologies :: Expr -> Bool
-propNullImpliesTautologies expr | isTautology expr = [] `implies` expr
-                                | otherwise = True
+propAnyImpliesTautology :: [Expr] -> Expr -> Bool
+propAnyImpliesTautology es e | isTautology e = es `implies` e
+                             | otherwise = True
 
 propConjImpliesConjuncts :: Expr -> Bool
 propConjImpliesConjuncts e@(Conjunction a b) = [e] `implies` a
