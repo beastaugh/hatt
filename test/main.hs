@@ -20,6 +20,7 @@ tests =
           ]
        , testGroup "QuickCheck Data.Logic.Propositional.NormalForms"
           [ testProperty "NNFNoConds" propNNFNoConds
+          , testProperty "NNFNegationInside" propNNFNegationInside
           , testProperty "NNFEquiv" propNNFEquiv
           , testProperty "CNFEquiv" propCNFEquiv
           , testProperty "DNFEquiv" propDNFEquiv
@@ -39,6 +40,17 @@ propNNFNoConds = noConds . toNNF
     noConds (Disjunction a b)   = noConds a && noConds b
     noConds (Conditional _ _)   = False
     noConds (Biconditional _ _) = False
+
+propNNFNegationInside :: Expr -> Bool
+propNNFNegationInside = negInside . toNNF
+  where
+    negInside (Variable _)            = True
+    negInside (Negation (Variable _)) = True
+    negInside (Negation _)            = False
+    negInside (Conjunction a b)       = negInside a && negInside b
+    negInside (Disjunction a b)       = negInside a && negInside b
+    negInside (Conditional _ _)       = error "No conditionals in NNF"
+    negInside (Biconditional _ _)     = error "No biconditionals in NNF"
 
 propNNFEquiv :: Expr -> Bool
 propNNFEquiv expr = expr `equivalent` toNNF expr
