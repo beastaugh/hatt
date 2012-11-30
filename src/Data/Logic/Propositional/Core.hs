@@ -50,7 +50,7 @@ randomExpr' n | n > 0     = oneof [ randomVar
                                   ]
               | otherwise = randomVar
   where
-    boundedExpr = randomExpr' (n `div` 2)
+    boundedExpr = randomExpr' (n `div` 4)
 
 randomBin :: Gen Expr -> Gen Expr
 randomBin rExp = oneof . map (\c -> liftM2 c rExp rExp)

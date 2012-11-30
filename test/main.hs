@@ -7,7 +7,7 @@ import Test.Framework as TF (defaultMainWithArgs, testGroup, Test)
 import Test.Framework.Providers.QuickCheck2 (testProperty)
 
 main :: IO ()
-main = defaultMainWithArgs tests ["-topt_maximum_test_size=200"]
+main = defaultMainWithArgs tests ["-d 10"]
 
 tests :: [TF.Test]
 tests =
@@ -16,11 +16,9 @@ tests =
           , testProperty "ContradictionImpliesAll" propContradictionImpliesAll
           , testProperty "NullImpliesTautologies" propNullImpliesTautologies
           , testProperty "ConjImpliesConjuncts" propConjImpliesConjuncts
-          , testProperty "DisjImpliesDisjunct" propDisjImpliesDisjunct
-          , testProperty "CondIffImplied" propCondIffImplied
           , testProperty "EquivsImplyEachOther" propEquivsImplyEachOther
-          ],
-       testGroup "QuickCheck Data.Logic.Propositional.NormalForms"
+          ]
+       , testGroup "QuickCheck Data.Logic.Propositional.NormalForms"
           [ testProperty "NNFNoConds" propNNFNoConds
           , testProperty "NNFEquiv" propNNFEquiv
           , testProperty "CNFEquiv" propCNFEquiv
@@ -33,15 +31,14 @@ propSelfEquiv :: Expr -> Bool
 propSelfEquiv expr = expr `equivalent` expr
 
 propNNFNoConds :: Expr -> Bool
-propNNFNoConds (Variable _)        = True
-propNNFNoConds (Negation e)        = propNNFNoConds e
-propNNFNoConds (Conjunction a b)   = propNNFNoConds a && propNNFNoConds b
-propNNFNoConds (Disjunction a b)   = propNNFNoConds a && propNNFNoConds b
-propNNFNoConds (Conditional _ _)   = False
-propNNFNoConds (Biconditional _ _) = False
-
-propFail :: Expr -> Bool
-propFail _ = False
+propNNFNoConds = noConds . toNNF
+  where
+    noConds (Variable _)        = True
+    noConds (Negation e)        = noConds e
+    noConds (Conjunction a b)   = noConds a && noConds b
+    noConds (Disjunction a b)   = noConds a && noConds b
+    noConds (Conditional _ _)   = False
+    noConds (Biconditional _ _) = False
 
 propNNFEquiv :: Expr -> Bool
 propNNFEquiv expr = expr `equivalent` toNNF expr
@@ -71,15 +68,6 @@ propConjImpliesConjuncts :: Expr -> Bool
 propConjImpliesConjuncts e@(Conjunction a b) = [e] `implies` a
                                             && [e] `implies` b
 propConjImpliesConjuncts _                   = True
-
-propDisjImpliesDisjunct :: Expr -> Bool
-propDisjImpliesDisjunct e@(Disjunction a b) = [e] `implies` a
-                                            || [e] `implies` b
-propDisjImpliesDisjunct _                   = True
-
-propCondIffImplied :: Expr -> Bool
-propCondIffImplied (Conditional a b) = [a] `implies` b
-propCondIffImplied _                 = True
 
 falsum :: Expr
 falsum = let a = Variable $ Var 'a'
