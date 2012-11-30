@@ -14,8 +14,8 @@ Version 1.6.0
 * Added an `implies` function checking whether a set of expressions semantically
   entail some expression.
 * Added a `simplify` function to the `NormalForms` module, which simplifies
-  expressions by removing contradictory disjuncts and tautologous conjuncts, as
-  well as some other simplifications.
+  expressions by removing stronger disjuncts and weaker conjuncts, as well as
+  some other simplifications.
 * The `toCNF` and `toDNF` functions now further simplify their output using the
   `simplify` function.
 * Limit number of expressions tested by QuickCheck to ensure the test suite runs
