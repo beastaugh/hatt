@@ -2,9 +2,8 @@ Hatt
 ====
 
 [Hatt] is a command-line program which prints truth tables for expressions in
-classical propositional logic, and a library allowing its parser, evaluator and
-truth table generator to be used in other programs.
-
+classical propositional logic, and a library allowing its parser, evaluator,
+truth table generator and other functionality to be used in other programs.
 
 Installation
 ------------
@@ -17,7 +16,6 @@ your list of known packages and then install Hatt.
 
 To build it from source, `cd` into the directory containing the Hatt source
 files, including `hatt.cabal`, and run `cabal install`.
-
 
 Valid Hatt expressions
 ----------------------
@@ -41,7 +39,6 @@ parenthesised versions of both these expressions (`(a | b)` and
 
 There is currently no support for operator precedence, so nested expressions
 must be parenthesised correctly for the parser to make sense of them.
-
 
 Using the `hatt` command-line program
 -------------------------------------
@@ -126,17 +123,18 @@ expression with `nnf`, `dnf` or `cnf`.
 The three supported normal forms are [negation normal form], [conjunctive normal
 form] and [disjunctive normal form].
 
-
 Using Hatt in other programs
 ----------------------------
 
 Hatt exposes the `Data.Logic.Propositional` module, which provides a simple API
-for parsing, evaluating, and printing truth tables, and for converting logical
-expressions into normal forms.
-
+for parsing, evaluating, and printing truth tables. It also includes the
+`Data.Logic.Propositional.NormalForms` module which exports functions to convert
+logical expressions into normal forms. Details of the foregoing can be found in
+the [library documentation].
 
 [Hatt]:    http://extralogical.net/projects/hatt
 [Hackage]: http://hackage.haskell.org/
 [negation normal form]: http://en.wikipedia.org/wiki/Negation_normal_form
 [conjunctive normal form]: http://en.wikipedia.org/wiki/Conjunctive_normal_form
 [disjunctive normal form]: http://en.wikipedia.org/wiki/Disjunctive_normal_form
+[library documentation]: http://hackage.haskell.org/package/hatt
