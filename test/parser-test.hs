@@ -3,8 +3,11 @@ module Main (main) where
 import Data.Logic.Propositional
 
 import Test.Framework as TF (defaultMain, testGroup, Test)
-import Test.Framework.Providers.HUnit( testCase )
+import Test.Framework.Providers.HUnit (testCase)
 import Test.HUnit.Base
+
+main :: IO ()
+main = defaultMain tests
 
 assertParsed :: String -> Expr -> TF.Test
 assertParsed toParse expected = testCase ("parse: " ++ toParse) $ either
@@ -20,22 +23,21 @@ tests = [ testGroup "Parser tests"
             , assertParsed "~p" (neg p)
             , assertParsed "(~p)" (neg p)
             , assertParsed "((~p))" (neg p)
-            , assertParsed "p & q" (con p q)
-            , assertParsed "(p & q)" (con p q)
-            , assertParsed "p & ~q" (con p (neg q))
-            , assertParsed "p & (~q)" (con p (neg q))
-            , assertParsed "(p & (~q & ~r))" (p `con` (neg q `con` neg r))
-            , assertParsed "(p <-> q)" (Biconditional p q)
-            , assertParsed "p -> (q & ~r)" (p `Conditional` con q (neg r))
+            , assertParsed "p & q" (p `conj` q)
+            , assertParsed "(p & q)" (p `conj` q)
+            , assertParsed "p & ~q" (p `conj` neg q)
+            , assertParsed "p & (~q)" (p `conj` neg q)
+            , assertParsed "(p & (~q & ~r))" (p `conj` (neg q `conj` neg r))
+            , assertParsed "(p <-> q)" (p `iff` q)
+            , assertParsed "p -> (q & ~r)" (p `cond` (q `conj` neg r))
             ]
         ]
   where
-    neg = Negation
-    con = Conjunction
-    p = Variable $ Var 'p'
-    q = Variable $ Var 'q'
-    r = Variable $ Var 'r'
-
-main :: IO ()
-main = defaultMain tests
-
+    neg  = Negation
+    conj = Conjunction
+    iff  = Biconditional
+    cond = Conditional
+    var  = Variable . Var
+    p    = var 'p'
+    q    = var 'q'
+    r    = var 'r'
