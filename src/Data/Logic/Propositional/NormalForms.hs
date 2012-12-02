@@ -77,7 +77,7 @@ toCNF = simplify . toCNF' . toNNF
 -- Because it first applies 'toNNF', it is a total function and can handle
 -- expressions which include conditionals and biconditionals.
 toDNF :: Expr -> Expr
-toDNF = simplify. toDNF' . toNNF
+toDNF = simplify . toDNF' . toNNF
   where
     toDNF' :: Expr -> Expr
     toDNF' (Conjunction e1 e2) = toDNF' e1 `dist` toDNF' e2
