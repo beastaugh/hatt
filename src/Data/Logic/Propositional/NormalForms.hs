@@ -6,10 +6,61 @@ module Data.Logic.Propositional.NormalForms
     ( toNNF
     , toCNF
     , toDNF
+    , toCNF_
+    , toDNF_
+    , exprToCNF
+    , exprToDNF
+    , exprFromCNF
+    , exprFromDNF
     , simplify
+    , simplifyNF
+    , containsComplements
     ) where
 
+import Control.Arrow (first)
+import Data.List (intersect, nub, partition)
+
 import Data.Logic.Propositional.Core
+
+toCNF_ :: Expr -> Expr
+toCNF_ = exprFromCNF . exprToCNF
+
+toDNF_ :: Expr -> Expr
+toDNF_ = exprFromDNF . exprToDNF
+
+exprToCNF :: Expr -> [[Expr]]
+exprToCNF = simplifyNF . map (disjToList []) . conjToList [] . toCNF
+
+exprToDNF :: Expr -> [[Expr]]
+exprToDNF = simplifyNF . map (conjToList []) . disjToList [] . toDNF
+
+exprFromCNF :: [[Expr]] -> Expr
+exprFromCNF [] = tee
+exprFromCNF cs = foldr1 Conjunction $ map (foldr1 Disjunction) cs
+
+exprFromDNF :: [[Expr]] -> Expr
+exprFromDNF [] = falsum
+exprFromDNF cs = foldr1 Disjunction $ map (foldr1 Conjunction) cs
+
+simplifyNF :: [[Expr]] -> [[Expr]]
+simplifyNF = nub . filter (not . containsComplements)
+
+containsComplements :: [Expr] -> Bool
+containsComplements = not . null . uncurry intersect
+                    . first (map unnegate) . partition isNegation
+  where
+    isNegation (Negation _) = True
+    isNegation _            = False
+    unnegate (Negation e) = e
+    unnegate e            = e
+
+conjToList :: [Expr] -> Expr -> [Expr]
+conjToList as (Conjunction e1 e2) = conjToList [] e1 ++ conjToList [] e2 ++ as
+conjToList as a                   = a : as
+
+disjToList :: [Expr] -> Expr -> [Expr]
+disjToList as (Disjunction e1 e2) = disjToList [] e1 ++ disjToList [] e2 ++ as
+disjToList as a                   = a : as
 
 -- | The 'toNNF' function converts expressions to negation normal form. This
 -- function is total: it's defined for all expressions, not just those which
@@ -77,7 +128,7 @@ toCNF = simplify . toCNF' . toNNF
 -- Because it first applies 'toNNF', it is a total function and can handle
 -- expressions which include conditionals and biconditionals.
 toDNF :: Expr -> Expr
-toDNF = simplify. toDNF' . toNNF
+toDNF = simplify . toDNF' . toNNF
   where
     toDNF' :: Expr -> Expr
     toDNF' (Conjunction e1 e2) = toDNF' e1 `dist` toDNF' e2

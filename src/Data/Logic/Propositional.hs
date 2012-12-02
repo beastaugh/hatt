@@ -11,6 +11,8 @@ module Data.Logic.Propositional
     , Var (..)
     , Mapping
     
+    , tee
+    , falsum
     , equivalent
     , equivalents
     , implies

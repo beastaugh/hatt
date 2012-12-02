@@ -24,6 +24,10 @@ tests =
           , testProperty "NNFEquiv" propNNFEquiv
           , testProperty "CNFEquiv" propCNFEquiv
           , testProperty "DNFEquiv" propDNFEquiv
+          , testProperty "CNF_Equiv" propCNF_Equiv
+          , testProperty "DNF_Equiv" propDNF_Equiv
+          , testProperty "CNFConvsEquiv" propCNFConvsEquiv
+          , testProperty "DNFConvsEquiv" propDNFConvsEquiv
           , testProperty "SimpEquiv" propSimpEquiv
           ]
       ]
@@ -61,6 +65,18 @@ propCNFEquiv expr = expr `equivalent` toCNF expr
 propDNFEquiv :: Expr -> Bool
 propDNFEquiv expr = expr `equivalent` toDNF expr
 
+propCNF_Equiv :: Expr -> Bool
+propCNF_Equiv expr = expr `equivalent` toCNF_ expr
+
+propDNF_Equiv :: Expr -> Bool
+propDNF_Equiv expr = expr `equivalent` toDNF_ expr
+
+propCNFConvsEquiv :: Expr -> Bool
+propCNFConvsEquiv expr = toCNF expr `equivalent` toCNF_ expr
+
+propDNFConvsEquiv :: Expr -> Bool
+propDNFConvsEquiv expr = toDNF expr `equivalent` toDNF_ expr
+
 propSimpEquiv :: Expr -> Bool
 propSimpEquiv expr = expr `equivalent` simplify expr
 
@@ -69,18 +85,15 @@ propEquivsImplyEachOther e1 e2 | equivalent e1 e2 = [e1] `implies` e2
                                                  && [e2] `implies` e1
                                | otherwise        = True
 
-propContradictionImpliesAll :: Expr -> Bool
-propContradictionImpliesAll expr = [falsum] `implies` expr
+propContradictionImpliesAll :: Expr -> Expr -> Bool
+propContradictionImpliesAll e1 e2 | isContradiction e1 = [e1] `implies` e2
+                                  | otherwise          = True
 
 propAnyImpliesTautology :: [Expr] -> Expr -> Bool
 propAnyImpliesTautology es e | isTautology e = es `implies` e
-                             | otherwise = True
+                             | otherwise     = True
 
 propConjImpliesConjuncts :: Expr -> Bool
 propConjImpliesConjuncts e@(Conjunction a b) = [e] `implies` a
                                             && [e] `implies` b
 propConjImpliesConjuncts _                   = True
-
-falsum :: Expr
-falsum = let a = Variable $ Var 'a'
-         in Conjunction a (Negation a)

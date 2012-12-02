@@ -64,6 +64,14 @@ randomVar = Variable <$> arbitrary
 
 type Mapping = Map Var Bool
 
+tee :: Expr
+tee = let a = Variable $ Var 'a'
+      in Disjunction a (Negation a)
+
+falsum :: Expr
+falsum = let a = Variable $ Var 'a'
+         in Conjunction a (Negation a)
+
 -- | In order to interpret an expression, a mapping from variables to truth
 -- values needs to be provided. Truth values are compositional; that's to say,
 -- the value of a composite expression (any expression which is not atomic)
