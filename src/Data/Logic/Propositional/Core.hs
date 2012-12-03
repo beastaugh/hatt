@@ -5,7 +5,6 @@ module Data.Logic.Propositional.Core where
 import Prelude hiding (lookup)
 
 import Control.Monad (liftM, liftM2, replicateM)
-import Data.Char (chr)
 import Data.Functor ((<$>))
 import Data.List (group, nub, sort)
 import Data.Map (Map, fromList, lookup)
@@ -35,7 +34,7 @@ instance Show Expr where
     show (Biconditional exp1 exp2) = showBC "↔" exp1 exp2
 
 instance Arbitrary Var where
-    arbitrary = liftM Var . elements . map chr $ [65..90] ++ [97..122]
+    arbitrary = liftM Var . elements $ ['A'..'Z'] ++ ['a'..'z']
 
 instance Arbitrary Expr where
     arbitrary = randomExpr
@@ -117,7 +116,7 @@ equivalents es = all (== head vs) (tail vs)
 implies :: [Expr] -> Expr -> Bool
 ps `implies` q = all (cond ps q) $ assignments (q : ps)
   where
-    cond as c a = let falseAntecdent = not . and . map (`interpret` a) $ as
+    cond as c a = let falseAntecdent = not . all (`interpret` a) $ as
                       trueConsequent = interpret c a
                   in falseAntecdent || trueConsequent
 
