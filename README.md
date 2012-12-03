@@ -37,8 +37,12 @@ and will be parsed correctly, as would `p <-> (q & ~r)`, although the
 parenthesised versions of both these expressions (`(a | b)` and
 `(p <-> (q & ~r))`) are also fine.
 
-There is currently no support for operator precedence, so nested expressions
-must be parenthesised correctly for the parser to make sense of them.
+Standard [operator precedence] for logical operators is supported. All the
+binary connectives associate to the right, so `a -> b -> c` is interpreted as
+`a -> (b -> c)`. To override these rules, use parentheses as normal. Note that
+right-associativity only matters for the material conditional: all the other
+logical operators are associative, so `a * (b * c)` is equivalent to
+`(a * b) * c` where `*` is conjunction, disjunction or the biconditional.
 
 Using the `hatt` command-line program
 -------------------------------------
@@ -134,6 +138,8 @@ the [library documentation].
 
 [Hatt]:    http://extralogical.net/projects/hatt
 [Hackage]: http://hackage.haskell.org/
+[operator precedence]:
+  http://en.wikipedia.org/wiki/Logical_connective#Order_of_precedence
 [negation normal form]: http://en.wikipedia.org/wiki/Negation_normal_form
 [conjunctive normal form]: http://en.wikipedia.org/wiki/Conjunctive_normal_form
 [disjunctive normal form]: http://en.wikipedia.org/wiki/Disjunctive_normal_form

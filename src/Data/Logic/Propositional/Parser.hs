@@ -32,6 +32,12 @@ import Text.Parsec.Expr
 -- Top-level expressions where the primary connective is a binary one do not
 -- need to be parenthesised. For example, @\"p -> (q & r)\"@ is a valid
 -- expression, although @\"(p -> (q & r))\"@ is also fine.
+--
+-- Both operator precedence and associativity are supported by the parser, so
+-- you can enter e.g. @\"p | q | ~r & s\"@ and it will parse it correctly as
+-- @\"(p | (q | (~r & s)))\"@. All the binary connectives are right associative,
+-- although this only really matters for the material conditional since all
+-- other logical operators are associative.
 parseExpr :: SourceName -> String -> Either ParseError Expr
 parseExpr = runP statement ()
 

@@ -147,7 +147,7 @@ replHelpText printer = unlines
   , "If you don't type in a command, the program will assume you're writing a"
   , "logical expression to be evaluated and attempt to parse it."
   , ""
-  , "For example, if you enter \"(A -> B)\" at the prompt, Hatt will print the"
+  , "For example, if you enter \"p -> q\" at the prompt, Hatt will print the"
   , "truth table for that expression. Here's an example console session."
   , ""
   , "    > " ++ showAscii exp1
@@ -165,10 +165,10 @@ replHelpText printer = unlines
   , "If none of this makes any sense, try reading the README file."
   ]
   where
-      exp1 = Disjunction (Variable $ Var 'A') (Variable $ Var 'B')
-      exp2 = Conditional (Variable $ Var 'P') exp4
+      exp1 = Disjunction (Variable $ Var 'a') (Variable $ Var 'b')
+      exp2 = Conditional (Variable $ Var 'p') exp4
       exp3 = Negation exp2
-      exp4 = Conjunction (Variable $ Var 'Q') (Variable $ Var 'R')
+      exp4 = Conjunction (Variable $ Var 'q') (Variable $ Var 'r')
 
 selectPrinter :: ProgramMode -> Printer
 selectPrinter m = let expPrinter   = if pretty m then show else showAscii
