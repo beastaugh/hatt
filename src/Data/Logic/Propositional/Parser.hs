@@ -75,7 +75,7 @@ operators = [ [unary "~" Negation]
             ]
 
 unary :: String -> (Expr -> Expr) -> Operator String u Identity Expr
-unary n c = Prefix . chainl1 (string n >> return c) $ return (.)
+unary n c = Prefix . chainl1 (string n >> spaces >> return c) $ return (.)
 
 binary :: String -> (Expr -> Expr -> Expr) -> Operator String u Identity Expr
 binary n c = Infix (string n >> spaces >> return c) AssocRight
