@@ -14,20 +14,21 @@ import Text.Parsec.Expr
 -- | The 'parseExpr' function accepts the name of a source, and a string to be
 -- parsed, and attempts to parse the string as a logical expression of the
 -- following forms, where @&#966;@ and @&#968;@ are metalinguistic variables
--- standing for any valid expression.
+-- standing for any valid expression. Together with ASCII representation, it
+-- also accepts Unicode symbols for logical connectives.
 --
 -- * Variables: @\"P\"@, @\"Q\"@, @\"a\"@, @\"b\"@ etc.; basically anything in
 --   the character class @[a-zA-Z]@
 --
--- * Negation: @\"~&#966;\"@
+-- * Negation: @\"~&#966;\"@ or @\"¬&#966;\"@
 --
--- * Conjunction: @\"(&#966; & &#968;)\"@
+-- * Conjunction: @\"(&#966; & &#968;)\"@ or @\"(&#966; ∧ &#968;)\"@
 --
--- * Disjunction: @\"(&#966; | &#968;)\"@
+-- * Disjunction: @\"(&#966; | &#968;)\"@ or @\"(&#966; ∨ &#968;)\"@
 --
--- * Conditional: @\"(&#966; -> &#968;)\"@
+-- * Conditional: @\"(&#966; -> &#968;)\"@ or @\"(&#966; → &#968;)\"@
 --
--- * Biconditional: @\"(&#966; \<-> &#968;)\"@
+-- * Biconditional: @\"(&#966; \<-> &#968;)\"@ or @\"(&#966; ↔ &#968;)\"@
 --
 -- Top-level expressions where the primary connective is a binary one do not
 -- need to be parenthesised. For example, @\"p -> (q & r)\"@ is a valid
