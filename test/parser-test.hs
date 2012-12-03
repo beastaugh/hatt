@@ -19,11 +19,16 @@ assertParsed toParse expected = testCase ("parse: " ++ toParse) $ either
 tests :: [TF.Test]
 tests = [ testGroup "Parser tests"
             [ assertParsed "p" p
+            , assertParsed "    p" p
+            , assertParsed "p    " p
+            , assertParsed "    p    " p
             , assertParsed "(p)" p
             , assertParsed "((p))" p
             , assertParsed "~p" (neg p)
             , assertParsed "(~p)" (neg p)
             , assertParsed "((~p))" (neg p)
+            , assertParsed " (     (p ) )  " p
+            , assertParsed " (  ~   (p ) )  " (neg p)
             , assertParsed "p & q" (p `conj` q)
             , assertParsed "(p & q)" (p `conj` q)
             , assertParsed "p & ~q" (p `conj` neg q)
@@ -31,6 +36,10 @@ tests = [ testGroup "Parser tests"
             , assertParsed "(p & (~q & ~r))" (p `conj` (neg q `conj` neg r))
             , assertParsed "(p <-> q)" (p `iff` q)
             , assertParsed "p -> (q & ~r)" (p `cond` (q `conj` neg r))
+            , assertParsed "p | q | ~r" (p `disj` (q `disj` neg r))
+            , assertParsed "p & q | r" ((p `conj` q) `disj` r)
+            , assertParsed "~p | q -> ~r" ((neg p `disj` q) `cond` neg r)
+            , assertParsed "p <-> ~q -> r" (p `iff` (neg q `cond` r))
             ]
         , testGroup "QuickCheck Data.Logic.Propositional"
             [ testProperty "UnserialisedExprsParse" propUnserialisedExprsParse
@@ -39,8 +48,9 @@ tests = [ testGroup "Parser tests"
   where
     neg  = Negation
     conj = Conjunction
-    iff  = Biconditional
+    disj = Disjunction
     cond = Conditional
+    iff  = Biconditional
     var  = Variable . Var
     p    = var 'p'
     q    = var 'q'
