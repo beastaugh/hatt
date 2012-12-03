@@ -65,4 +65,5 @@ Test-Suite test-parser
                     hatt,
                     HUnit,
                     test-framework >= 0.4.1,
-                    test-framework-hunit
+                    test-framework-hunit,
+                    test-framework-quickcheck2

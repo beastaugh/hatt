@@ -4,6 +4,7 @@ import Data.Logic.Propositional
 
 import Test.Framework as TF (defaultMain, testGroup, Test)
 import Test.Framework.Providers.HUnit (testCase)
+import Test.Framework.Providers.QuickCheck2 (testProperty)
 import Test.HUnit.Base
 
 main :: IO ()
@@ -31,6 +32,9 @@ tests = [ testGroup "Parser tests"
             , assertParsed "(p <-> q)" (p `iff` q)
             , assertParsed "p -> (q & ~r)" (p `cond` (q `conj` neg r))
             ]
+        , testGroup "QuickCheck Data.Logic.Propositional"
+            [ testProperty "UnserialisedExprsParse" propUnserialisedExprsParse
+            ]
         ]
   where
     neg  = Negation
@@ -41,3 +45,8 @@ tests = [ testGroup "Parser tests"
     p    = var 'p'
     q    = var 'q'
     r    = var 'r'
+
+propUnserialisedExprsParse :: Expr -> Bool
+propUnserialisedExprsParse input = case parseExpr "" $ showAscii input of
+                                     Right output -> input == output
+                                     Left  _      -> False
