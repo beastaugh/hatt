@@ -6,6 +6,8 @@ Version 1.6.0
 
 * Breaking API change: the `assignments` function now takes a list of
   expressions rather than a single expression.
+* New parser which handles operator precedence and associativity. This change
+  entails a depedency bump: Parsec 3 is now required.
 * Fixed a bug in the `toNNF` function: doubly-negated expressions are now
   converted into normal form rather than just having the double negation
   removed.
