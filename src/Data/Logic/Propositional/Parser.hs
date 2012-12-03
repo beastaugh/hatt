@@ -46,7 +46,7 @@ statement = do spaces
                return x
 
 expr :: GenParser Char st Expr
-expr = choice [binaryP, negation, variable]
+expr = choice [exprP, negation, variable]
 
 variable :: GenParser Char st Expr
 variable = do c <- letter
@@ -55,23 +55,23 @@ variable = do c <- letter
 negation :: GenParser Char st Expr
 negation = do char '~'
               spaces
-              x <- expr
+              x <- try expr <|> exprP
               return $ Negation x
 
-binaryP :: GenParser Char st Expr
-binaryP = do char '('
-             spaces
-             x <- binary
-             spaces
-             char ')'
-             return x
+exprP :: GenParser Char st Expr
+exprP = do char '('
+           spaces
+           x <- try binary <|> try expr <|> exprP
+           spaces
+           char ')'
+           return x
 
 binary :: GenParser Char st Expr
 binary = do x1 <- expr
             spaces
             s  <- choice $ map string ["&", "|", "->", "<->"]
             spaces
-            x2 <- expr
+            x2 <- try expr <|> exprP
             return $ connective s x1 x2
   where
     connective c = case c of

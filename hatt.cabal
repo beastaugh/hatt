@@ -55,3 +55,13 @@ Test-Suite test-hatt
                     hatt,
                     test-framework >= 0.4.1,
                     test-framework-quickcheck2
+
+Test-Suite test-parser
+  Type:             exitcode-stdio-1.0
+  Main-is:          test/parser-test.hs
+  GHC-options:      -Wall
+  Build-depends:    base           >= 4 && < 5,
+                    hatt,
+                    HUnit,
+                    test-framework >= 0.4.1,
+                    test-framework-hunit
