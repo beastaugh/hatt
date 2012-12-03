@@ -42,7 +42,8 @@ tests = [ testGroup "Parser tests"
             , assertParsed "p <-> ~q -> r" (p `iff` (neg q `cond` r))
             ]
         , testGroup "QuickCheck Data.Logic.Propositional"
-            [ testProperty "UnserialisedExprsParse" propUnserialisedExprsParse
+            [ testProperty "UnserialisedExprsParseA" propUnserialisedExprsParseA
+            , testProperty "UnserialisedExprsParseU" propUnserialisedExprsParseU
             ]
         ]
   where
@@ -56,7 +57,15 @@ tests = [ testGroup "Parser tests"
     q    = var 'q'
     r    = var 'r'
 
-propUnserialisedExprsParse :: Expr -> Bool
-propUnserialisedExprsParse input = case parseExpr "" $ showAscii input of
-                                     Right output -> input == output
-                                     Left  _      -> False
+
+propUnserialisedExprsParse :: (Expr -> String) -> Expr -> Bool
+propUnserialisedExprsParse showF input = case parseExpr "" $ showF input of
+                                           Right output -> input == output
+                                           Left  _      -> False
+
+propUnserialisedExprsParseA :: Expr -> Bool
+propUnserialisedExprsParseA = propUnserialisedExprsParse showAscii
+
+propUnserialisedExprsParseU :: Expr -> Bool
+propUnserialisedExprsParseU = propUnserialisedExprsParse show
+
