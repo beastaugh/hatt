@@ -67,12 +67,15 @@ parens p = do char '('
         <?> "parens"
 
 operators :: OperatorTable String u Identity Expr
-operators = [ [Prefix (string "~" >> return Negation)]
+operators = [ [unary "~" Negation]
             , [binary "&" Conjunction]
             , [binary "|" Disjunction]
             , [binary "->" Conditional]
             , [binary "<->" Biconditional]
             ]
+
+unary :: String -> (Expr -> Expr) -> Operator String u Identity Expr
+unary n c = Prefix . chainl1 (string n >> return c) $ return (.)
 
 binary :: String -> (Expr -> Expr -> Expr) -> Operator String u Identity Expr
 binary n c = Infix (string n >> spaces >> return c) AssocRight
