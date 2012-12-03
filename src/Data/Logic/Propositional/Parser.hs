@@ -74,10 +74,15 @@ parens p = do char '('
 
 operators :: OperatorTable String u Identity Expr
 operators = [ [unary "~" Negation]
+            , [unary "¬" Negation]
             , [binary "&" Conjunction]
+            , [binary "∧" Conjunction]
             , [binary "|" Disjunction]
+            , [binary "∨" Disjunction]
             , [binary "->" Conditional]
+            , [binary "→" Conditional]
             , [binary "<->" Biconditional]
+            , [binary "↔" Biconditional]
             ]
 
 unary :: String -> (Expr -> Expr) -> Operator String u Identity Expr
