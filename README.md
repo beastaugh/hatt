@@ -96,7 +96,7 @@ directly.
 
 By default, `hatt` will print ASCII representations of expressions. If you have
 a Unicode-capable terminal, try passing the `--pretty` option to pretty-print
-expressions using the the more common logical symbols.
+expressions using the more common logical symbols.
 
     $ hatt --evaluate="P -> (Q | ~R)" --pretty
     P Q R | (P → (Q ∨ ¬R))
