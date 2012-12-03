@@ -31,8 +31,8 @@ rewrite to corresponding ASCII representations.
 * Negation: `~ϕ` or `¬ϕ`
 * Conjunction: `(ϕ & ψ)` or `(ϕ ∧ ψ)`
 * Disjunction: `(ϕ | ψ)` or `(ϕ ∨ ψ)`
-* Conditional: `(ϕ -> ψ)` `(ϕ → ψ)`
-* Biconditional: `(ϕ <-> ψ)` `(ϕ ↔ ψ)`
+* Conditional: `(ϕ -> ψ)` or `(ϕ → ψ)`
+* Biconditional: `(ϕ <-> ψ)` or `(ϕ ↔ ψ)`
 
 Parentheses are not required around top-level formulae, regardless of whether
 the primary connective is binary. For example, the expression `a | b` is valid

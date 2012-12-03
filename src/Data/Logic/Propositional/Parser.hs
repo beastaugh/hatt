@@ -73,17 +73,15 @@ parens p = do char '('
         <?> "parens"
 
 operators :: OperatorTable String u Identity Expr
-operators = [ [unary "~" Negation]
-            , [unary "¬" Negation]
-            , [binary "&" Conjunction]
-            , [binary "∧" Conjunction]
-            , [binary "|" Disjunction]
-            , [binary "∨" Disjunction]
-            , [binary "->" Conditional]
-            , [binary "→" Conditional]
-            , [binary "<->" Biconditional]
-            , [binary "↔" Biconditional]
+operators = [ f unary Negation      [ "~",   "¬"]
+            , bin     Conjunction   [ "&",   "∧"]
+            , bin     Disjunction   [ "|",   "∨"]
+            , bin     Conditional   [ "->",  "→"]
+            , bin     Biconditional [ "<->", "↔"]
             ]
+  where
+    f a c = map (`a` c)
+    bin = f binary
 
 unary :: String -> (Expr -> Expr) -> Operator String u Identity Expr
 unary n c = Prefix . chainl1 (string n >> spaces >> return c) $ return (.)
