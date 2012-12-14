@@ -4,7 +4,8 @@ Hatt changelog
 Version 1.6.0
 -------------
 
-* Possibility to pass Unicode representation for logical connectives on input.
+* The Unicode symbols for logical connectives are now accepted by the parser and
+  command-line program: ¬, ∧, ∨, → and ↔.
 * Breaking API change: the `assignments` function now takes a list of
   expressions rather than a single expression.
 * New parser which handles operator precedence and associativity. This change
