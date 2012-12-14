@@ -94,9 +94,9 @@ binary c n = Infix (string n >> spaces >> return c) AssocRight
 unaries :: (Expr -> Expr)
         -> [String]
         -> [Operator String u Identity Expr]
-unaries c ns = map (unary c) ns
+unaries c = map (unary c)
 
 binaries :: (Expr -> Expr -> Expr)
          -> [String]
          -> [Operator String u Identity Expr]
-binaries c ns = map (binary c) ns
+binaries c = map (binary c)
