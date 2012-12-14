@@ -21,15 +21,18 @@ Valid Hatt expressions
 ----------------------
 
 The following are all valid expression forms which can be parsed by Hatt, where
-ϕ and ψ are metalinguistic variables standing in for any valid expression.
+ϕ and ψ are metalinguistic variables standing in for any valid expression. Note
+that Hatt accepts Unicode symbols for logical connectives. This is practical for
+example when wanting to copy-paste formulae from web browser - no need to
+rewrite to corresponding ASCII representations.
 
 * Variables: `P`, `Q`, `a`, `b` etc.---basically anything in the character
   class `[a-zA-Z]`
-* Negation: `~ϕ`
-* Conjunction: `(ϕ & ψ)`
-* Disjunction: `(ϕ | ψ)`
-* Conditional: `(ϕ -> ψ)`
-* Biconditional: `(ϕ <-> ψ)`
+* Negation: `~ϕ` or `¬ϕ`
+* Conjunction: `(ϕ & ψ)` or `(ϕ ∧ ψ)`
+* Disjunction: `(ϕ | ψ)` or `(ϕ ∨ ψ)`
+* Conditional: `(ϕ -> ψ)` or `(ϕ → ψ)`
+* Biconditional: `(ϕ <-> ψ)` or `(ϕ ↔ ψ)`
 
 Parentheses are not required around top-level formulae, regardless of whether
 the primary connective is binary. For example, the expression `a | b` is valid
