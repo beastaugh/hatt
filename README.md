@@ -21,10 +21,10 @@ Valid Hatt expressions
 ----------------------
 
 The following are all valid expression forms which can be parsed by Hatt, where
-ϕ and ψ are metalinguistic variables standing in for any valid expression. Note
-that Hatt accepts Unicode symbols for logical connectives. This is practical for
-example when wanting to copy-paste formulae from web browser - no need to
-rewrite to corresponding ASCII representations.
+`ϕ` and `ψ` are metalinguistic variables standing in for any valid expression.
+Hatt accepts the standard Unicode symbols for logical connectives. This is
+useful when pasting example formulae from the web or using Hatt in `--pretty`
+mode.
 
 * Variables: `P`, `Q`, `a`, `b` etc.---basically anything in the character
   class `[a-zA-Z]`
