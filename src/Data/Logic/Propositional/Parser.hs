@@ -20,15 +20,15 @@ import Text.Parsec.Expr
 -- * Variables: @\"P\"@, @\"Q\"@, @\"a\"@, @\"b\"@ etc.; basically anything in
 --   the character class @[a-zA-Z]@
 --
--- * Negation: @\"~&#966;\"@ or @\"¬&#966;\"@
+-- * Negation: @\"~&#966;\"@ or @\"&#172;&#966;\"@
 --
--- * Conjunction: @\"(&#966; & &#968;)\"@ or @\"(&#966; ∧ &#968;)\"@
+-- * Conjunction: @\"(&#966; & &#968;)\"@ or @\"(&#966; &#8743; &#968;)\"@
 --
--- * Disjunction: @\"(&#966; | &#968;)\"@ or @\"(&#966; ∨ &#968;)\"@
+-- * Disjunction: @\"(&#966; | &#968;)\"@ or @\"(&#966; &#8744; &#968;)\"@
 --
--- * Conditional: @\"(&#966; -> &#968;)\"@ or @\"(&#966; → &#968;)\"@
+-- * Conditional: @\"(&#966; -> &#968;)\"@ or @\"(&#966; &#8594; &#968;)\"@
 --
--- * Biconditional: @\"(&#966; \<-> &#968;)\"@ or @\"(&#966; ↔ &#968;)\"@
+-- * Biconditional: @\"(&#966; \<-> &#968;)\"@ or @\"(&#966; &#8596; &#968;)\"@
 --
 -- Top-level expressions where the primary connective is a binary one do not
 -- need to be parenthesised. For example, @\"p -> (q & r)\"@ is a valid
