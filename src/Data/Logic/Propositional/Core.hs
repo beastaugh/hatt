@@ -70,8 +70,8 @@ type Mapping = Map Var Bool
 -- expression below would evaluate to @False@.
 --
 -- > interpret
--- >     (Conjunction (Variable "A") (Variable "B"))
--- >     (fromList [("A", True), ("B", False)])
+-- >     (Conjunction (Variable $ Var 'a') (Variable $ Var 'b'))
+-- >     (fromList [(Var 'a', True), (Var 'b', False)])
 interpret :: Expr -> Mapping -> Bool
 interpret (Variable      v)         vs = fromMaybe False (lookup v vs)
 interpret (Negation      expr)      vs = not $ interpret expr vs
