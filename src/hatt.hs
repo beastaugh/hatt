@@ -115,8 +115,8 @@ parseCommand input = case cmd . words $ input of
 
 toNFStr :: NormalForm -> (Expr -> String) -> Expr -> String
 toNFStr NNF p = p . toNNF
-toNFStr CNF p = p . toCNF
-toNFStr DNF p = p . toDNF
+toNFStr CNF p = p . toCNF_
+toNFStr DNF p = p . toDNF_
 
 replIntroText :: String
 replIntroText = unwords
