@@ -29,10 +29,16 @@ toDNF_ :: Expr -> Expr
 toDNF_ = exprFromDNF . exprToDNF
 
 exprToCNF :: Expr -> [[Expr]]
-exprToCNF = simplifyNF . map (disjToList []) . conjToList [] . toCNF
+exprToCNF = simplifyNF
+          . map (nub . disjToList [])
+          . conjToList []
+          . toCNF
 
 exprToDNF :: Expr -> [[Expr]]
-exprToDNF = simplifyNF . map (conjToList []) . disjToList [] . toDNF
+exprToDNF = simplifyNF
+          . map (nub . conjToList [])
+          . disjToList []
+          . toDNF
 
 exprFromCNF :: [[Expr]] -> Expr
 exprFromCNF [] = tee
