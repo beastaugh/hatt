@@ -9,6 +9,7 @@ module Data.Logic.Propositional.Tables
     , colourBool
     , showBool
     , truthTable
+    , truthTablewithColor
     , truthTableP
     ) where
 
@@ -21,7 +22,12 @@ type Printer = (Expr -> String, Bool -> String)
 
 -- | The 'truthTable' function produces a truth table for the given expression.
 truthTable :: Expr -> String
-truthTable = truthTableP (show, colourBool)
+truthTable = truthTableP (show, showBool)
+
+-- | This 'truthTablewithColor' function produces a coloured truth
+-- table with green for 'True' and red for 'False'
+truthTablewithColor :: Expr -> String
+truthTablewithColor = truthTableP (show, colourBool)
 
 -- | The 'truthTableP' is a configurable version of 'truthTable' which allows a
 -- printer function to be selected, so for example one can print ASCII truth
@@ -47,10 +53,12 @@ showBool :: Bool -> String
 showBool True  = "T"
 showBool False = "F"
 
--- | Prints a green @T@ for 'True' and a red @F@ for 'False'. This is used when
--- producing a string representation of a truth table with 'truthTable'. It can
--- also be used as (as the second component of a 'Printer' pair) as an argument
--- to the configurable 'truthTableP' function.
+-- | Prints a green @T@ for 'True' and a red @F@ for 'False'. This is
+-- used when producing a string representation of a truth table with
+-- 'truthTablewithColor'. It can also be used as (as the second
+-- component of a 'Printer' pair) as an argument to the configurable
+-- 'truthTableP' function.
 colourBool :: Bool -> String
 colourBool True  = show . green . text $ "T"
 colourBool False = show . red . text $ "F"
+
