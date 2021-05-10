@@ -39,7 +39,7 @@ truthTableP (expPrinter, boolPrinter) expr = unlines [header, separator, body]
 showAssignment :: (Bool -> String) -> Expr -> Mapping -> String
 showAssignment printer expr a = showVarValues ++ " | " ++ showExprValue
   where
-    showVarValues = unwords $ fold ((:) . printer) [] a
+    showVarValues = unwords $ foldr ((:) . printer) [] a
     showExprValue = printer $ interpret expr a
 
 -- | Prints @T@ for 'True' and @F@ for 'False'.
